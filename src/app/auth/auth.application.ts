@@ -1,7 +1,9 @@
 import { IAuth, Auth, User, GoogleDTO } from "../../domain";
 import bcrypt from 'bcryptjs';
 import { generateJWT } from "../../helper/jwt";
-import { transporter } from "../../helper/email.helper";
+import { msg } from "../../helper/email.helper";
+import sgMail from '@sendgrid/mail'; 
+import 'dotenv/config';
 export class AuthApplication {
     constructor(private auth: IAuth){}
     
@@ -84,20 +86,18 @@ export class AuthApplication {
     generateVerificationCode(email: string) {
         const verificationCodes: Map<string, { code: string; expiresAt: number }> = new Map();
         const code = Math.floor(100000 + Math.random() * 900000).toString(); // Código de 6 dígitos
-        const expiresAt = Date.now() + 5 * 60 * 1000; // Expira en 5 minutos
-        
-        verificationCodes.set(email, { code, expiresAt });
-        
+        const expiresAt = Date.now() + 5 * 60 * 1000; // Expira en 5 minutos        
+        verificationCodes.set(email, { code, expiresAt });        
         return code;
     };
 
-    async sendVerificationCode(email: string, code: string) {
-        const mailOptions = {
-            from: `"Soporte" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: "Código de verificación",
-            text: `Tu código de verificación es: ${code}`,
-        };    
-        await transporter.sendMail(mailOptions);
+    async sendVerificationCode(email: string, code: string): Promise<Boolean> {
+        sgMail.setApiKey(String(process.env.SENDGRID_API_KEY))   
+        try {
+            const response = await sgMail.send(msg(email, code));
+            return response[0].statusCode === 202;
+        } catch (error) {
+            throw error;
+        }
     };
 }

@@ -49,17 +49,14 @@ export class AuthController {
     }
 
     async sendCode( req:Request, res:Response ) {
-        // const { email } = req.body;
-        // if (!email) return res.status(400).json({ message: "Email requerido" });
-
         const code = this._authApplication.generateVerificationCode('tbautistah@fcpn.edu.bo');
-
         try {
-            await this._authApplication.sendVerificationCode('tbautistah@fcpn.edu.bo', code);
-            res.json({ message: "Código enviado al correo" });
+            const response = await this._authApplication.sendVerificationCode('tbautistah@fcpn.edu.bo', code);
+            return response? ResponseApi.successResponse(res, 'Codigo enviado', response) :
+             ResponseApi.errorResponse(res, 'Codigo no enviado', response);
         } catch (error) {
             console.log(error);
-            res.status(500).json({ message: "Error enviando email" });
+            return ResponseApi.errorResponse(res, 'Error en el servidor', error);
         }
     }
 }
