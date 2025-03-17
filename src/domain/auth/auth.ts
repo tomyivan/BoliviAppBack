@@ -45,6 +45,7 @@ export interface User {
     gender: 1 | 2;	
     city: string;
     issuer: string; 
+    verify?: 0 | 1;    
 }
 
 export interface GoogleDTO {

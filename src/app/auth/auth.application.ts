@@ -1,6 +1,7 @@
 import { IAuth, Auth, User, GoogleDTO } from "../../domain";
 import bcrypt from 'bcryptjs';
 import { generateJWT } from "../../helper/jwt";
+import { transporter } from "../../helper/email.helper";
 export class AuthApplication {
     constructor(private auth: IAuth){}
     
@@ -35,6 +36,7 @@ export class AuthApplication {
         };
     }
     
+
     async loginWithGoogle(data: GoogleDTO):Promise<any>{
         const auth:User = {
             email: data.email,
@@ -79,4 +81,23 @@ export class AuthApplication {
         return bcrypt.hashSync(pass, salt);
     }
 
+    generateVerificationCode(email: string) {
+        const verificationCodes: Map<string, { code: string; expiresAt: number }> = new Map();
+        const code = Math.floor(100000 + Math.random() * 900000).toString(); // Código de 6 dígitos
+        const expiresAt = Date.now() + 5 * 60 * 1000; // Expira en 5 minutos
+        
+        verificationCodes.set(email, { code, expiresAt });
+        
+        return code;
+    };
+
+    async sendVerificationCode(email: string, code: string) {
+        const mailOptions = {
+            from: `"Soporte" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: "Código de verificación",
+            text: `Tu código de verificación es: ${code}`,
+        };    
+        await transporter.sendMail(mailOptions);
+    };
 }

@@ -11,6 +11,6 @@ export class AuthQuerys {
         // if (q?.city) query += ` AND ciudad = '${q.city}'`;
         return query;
     }
-    static register = () => `INSERT INTO usuarios (token, nombre, apellidos, alias, correo, num_cel, cod_cel, genero, pass, editor) 
-        VALUES (@token, @name, @lastname, @nickname, @email, @phoneNumber, @codPhone, @gender, @pass, @issuer)`;
+    static register = () => `INSERT INTO usuarios (token, nombre, apellidos, alias, correo, num_cel, cod_cel, genero, pass, editor, verificado) 
+        VALUES (@token, @name, @lastname, @nickname, @email, @phoneNumber, @codPhone, @gender, @pass, @issuer, @isVerify)`;
 }

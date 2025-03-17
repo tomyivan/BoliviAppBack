@@ -47,10 +47,6 @@ rAuth.get("/redirect/google", passport.authenticate("google",{
     session: false,    
 }), (req, res) => {
     const user = req.user as any;
-    // const script = `
-    //     window.localStorage.setItem("token", "${user.user.token}");
-    //     window.close();
-    // `;
     res.send(` <script>
       window.opener.postMessage(
         { token: "${user.user.token}" },
@@ -58,8 +54,9 @@ rAuth.get("/redirect/google", passport.authenticate("google",{
       );
       window.close();
     </script>`);
-  });
+});
 
+rAuth.post("/send-code", AuthClt.sendCode.bind(AuthClt));
 export {
     rAuth
 }

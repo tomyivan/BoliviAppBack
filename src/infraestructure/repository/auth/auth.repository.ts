@@ -27,7 +27,7 @@ export class AuthRepository implements IAuth {
             const data = result.recordset[0];
             if (!data) {
                 this.addUser(auth);
-                return this.loginWithGoogle(auth);
+                return this.loginWithGoogle({...auth, verify: 1});
             }
             return data;
         } catch (error) {
@@ -49,6 +49,7 @@ export class AuthRepository implements IAuth {
                     .input('codPhone', sql.Int, 591)
                     .input('pass', sql.VarChar, user.pass)
                     .input('gender', sql.Int, user.gender)
+                    .input('isVerify', sql.Int, user.verify ? 1 : 0)
                     .input('issuer', sql.VarChar, user.issuer ?? 'local')
                 .query(AuthQuerys.register());
             
