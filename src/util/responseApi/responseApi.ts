@@ -4,8 +4,9 @@ export class ResponseApi {
         return res.status(200).json({
             status: 200,
             ok: true,
+            msg,
             body: {
-                msg,
+                
                 data
             }
         });
@@ -13,9 +14,9 @@ export class ResponseApi {
     static errorResponse(res: expressResponse, msg:string, data: any) {
         return res.status(500).json({
             status: 500,
-            ok:false,  
-            body: {
-                msg,
+            ok:false,
+            msg,  
+            body: {                
                 data
             }
         });
@@ -24,8 +25,8 @@ export class ResponseApi {
         return res.status(404).json({
             ok: false,
             status: 404,
+            msg,
             body: {
-                msg,
                 data
             }
         });

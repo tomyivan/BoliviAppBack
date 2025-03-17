@@ -1,0 +1,1 @@
+export { rAuth } from "./http-api/auth/router/router";

@@ -8,8 +8,12 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "rootDir": "./src",
+    "typeRoots": ["./node_modules/@types", "./src/types"]
     // "paths": {}
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "files": true // Habilita la inclusión de archivos de definición en ts-node
+  }
 }
