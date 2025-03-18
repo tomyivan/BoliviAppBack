@@ -49,9 +49,10 @@ export class AuthController {
     }
 
     async sendCode( req:Request, res:Response ) {
-        const code = this._authApplication.generateVerificationCode('tbautistah@fcpn.edu.bo');
         try {
-            const response = await this._authApplication.sendVerificationCode('tbautistah@fcpn.edu.bo', code);
+            const { auth } = req.body;
+            const code = this._authApplication.generateVerificationCode(auth.email);
+            const response = await this._authApplication.sendVerificationCode(auth.email, code);            
             return response? ResponseApi.successResponse(res, 'Codigo enviado', response) :
              ResponseApi.errorResponse(res, 'Codigo no enviado', response);
         } catch (error) {
@@ -59,4 +60,18 @@ export class AuthController {
             return ResponseApi.errorResponse(res, 'Error en el servidor', error);
         }
     }
+
+    async existEmail(req:Request, res:Response): Promise<any> {
+        try {
+            const { auth } = req.body;
+            const response = await this._authApplication.getByEmail( auth.email );            
+            return response? ResponseApi.successResponse(res, 'Email existente', true) :
+            ResponseApi.errorResponse(res, 'Email no existente', false);
+        } catch (error) {
+            console.log(error);
+            return ResponseApi.errorResponse(res, 'Error en el servidor', error);
+        }
+    }
+
+    
 }

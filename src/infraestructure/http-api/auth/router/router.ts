@@ -35,9 +35,10 @@ rAuth.post("/register", [
     check('auth.phoneNumber', 'El numero telefonico es obligatorio').not().isEmpty(),       
     check('auth.city', 'La ciudad es obligatorio').not().isEmpty(),        
     check('auth.nickname', 'El nickname es obligatorio').not().isEmpty(),
-    check('auth.pass', 'El pass es obligatorio').not().isEmpty(),       
+    check('auth.pass', 'El pass es obligatorio').not().isEmpty(),    
+    check('auth.code', 'El codigo es obligatorio').not().isEmpty(),   
     validationField    
-], AuthMiddleware.existEmail.bind( AuthMiddleware ) ,AuthClt.addUser.bind(AuthClt));
+], AuthMiddleware.existEmail.bind( AuthMiddleware ), AuthMiddleware.verifyCode.bind( AuthMiddleware ), AuthClt.addUser.bind(AuthClt));
 
 rAuth.get('/google', passport.authenticate('google', { scope: ['profile', 'email'],
     session: false
@@ -59,7 +60,12 @@ rAuth.get("/redirect/google", passport.authenticate("google",{
     </script>`);
 });
 
-rAuth.post("/send-code", AuthClt.sendCode.bind(AuthClt));
+rAuth.post("/send-code", [
+    check('auth.email', 'El email es obligatorio').not().isEmpty(),
+    validationField
+],AuthClt.sendCode.bind(AuthClt));
+
+rAuth.post("/verify-email", AuthClt.existEmail.bind(AuthClt));
 export {
     rAuth
 }

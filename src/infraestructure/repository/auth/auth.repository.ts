@@ -1,4 +1,4 @@
-import { IAuth, UserDTO } from "../../../domain";
+import { CodeVerify,  IAuth, UserDTO } from "../../../domain";
 import { sql, connectToDatabase } from "../datasource/connection";
 import { Auth, User } from "../../../domain";
 import { AuthQuerys } from "../query/auth.query";
@@ -65,6 +65,46 @@ export class AuthRepository implements IAuth {
                 .query(AuthQuerys.register());
             
             return result.rowsAffected.length > 0;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async createCode(data: CodeVerify): Promise<Boolean> {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .input('email', sql.VarChar, data.email)
+                .input('code', sql.VarChar, data.code)
+                .query(AuthQuerys.createCode());
+            return result.rowsAffected[0] > 0;        
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    async updateCode( data: CodeVerify ): Promise<Boolean> {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .input('email', sql.VarChar, data.email)
+                .input('code', sql.VarChar, data.code)
+                .query(AuthQuerys.updateCode());
+            console.log(result);
+            return result.rowsAffected[0] > 0;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async verifyCode(data: CodeVerify): Promise<Boolean> {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .input('email', sql.VarChar, data.email)
+                .input('code', sql.VarChar, String(data.code))
+                .query(AuthQuerys.deleteCode());
+            return result.rowsAffected[0] > 0;
         } catch (error) {
             throw error;
         }

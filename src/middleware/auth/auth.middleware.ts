@@ -15,7 +15,19 @@ export class AuthMiddleware {
         } catch (error) {
             console.log(error);
             return ResponseApi.errorResponse(res, 'Error al verifcar', error);
+        }        
+    }
+    static async verifyCode(req:Request, res:Response, next:NextFunction) {
+        const { auth } = req.body;
+        try {
+            const _authRepo = new AuthRepository();
+            const _authApplication = new AuthApplication(_authRepo);
+            const response = await _authApplication.verifyCode(auth);
+            if (!response) return ResponseApi.errorResponse(res, 'Codigo invalido', null);
+            next();
+        } catch (error) {
+            console.log(error);
+            return ResponseApi.errorResponse(res, 'Error al verifcar', error);
         }
-        
     }
 }

@@ -1,4 +1,4 @@
-import { IAuth, Auth, User, GoogleDTO, UserDTO } from "../../domain";
+import { IAuth, Auth, User, GoogleDTO, UserDTO, CodeVerify } from "../../domain";
 import bcrypt from 'bcryptjs';
 import { generateJWT } from "../../helper/jwt";
 import { msg } from "../../helper/email.helper";
@@ -94,6 +94,11 @@ export class AuthApplication {
     async sendVerificationCode(email: string, code: string): Promise<Boolean> {
         sgMail.setApiKey(String(process.env.SENDGRID_API_KEY))   
         try {
+            const isUpdate = await this.auth.updateCode({email, code});
+            if(!isUpdate)  {
+                const result = this.auth.createCode({email, code});
+                if(!result) return false;
+            }
             const response = await sgMail.send(msg(email, code));
             return response[0].statusCode === 202;
         } catch (error) {
@@ -102,5 +107,9 @@ export class AuthApplication {
     };
     async getByEmail(email: string, issuer?:string): Promise<UserDTO> {
         return this.auth.getByEmail(email , issuer);
+    }
+    
+    async verifyCode(data: CodeVerify): Promise<Boolean> {
+        return this.auth.verifyCode(data);
     }
 }

@@ -45,7 +45,8 @@ export interface User {
     gender: 1 | 2;	
     city: string;
     issuer: string; 
-    verify?: 0 | 1;    
+    verify?: 0 | 1; 
+    code?: string;   
 }
 
 export interface GoogleDTO {
@@ -55,4 +56,10 @@ export interface GoogleDTO {
     family_name: string;
     picture: string;
     email: string;
+}
+
+export interface CodeVerify {
+    email: string;
+    code: string;
+    experationDate?: string;
 }
