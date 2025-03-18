@@ -1,12 +1,11 @@
-import { AuthClt } from "../../../dependences/auth.dependences";
+import { AuthClt, authApp } from "../../../dependences/auth.dependences";
 import 'dotenv/config';
 import { validationField, validationJWT } from "../../../../middleware";
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import { check } from "express-validator";
 import passport from "passport";
 import passportGoogle from "passport-google-oauth20";
-import { ResponseApi } from "../../../../util";
-
+import { AuthMiddleware } from "../../../../middleware";
 const rAuth = express.Router();
 const googleStrategy = passportGoogle.Strategy;
 passport.use(new googleStrategy({
@@ -15,8 +14,10 @@ passport.use(new googleStrategy({
     callbackURL: '/api/v1/p/auth/redirect/google',
     scope: ['profile']
 }, async (token, refreshToken,  profile, done) => {
-    const response = await AuthClt.loginWithGoogle(profile._json as any); 
-    done(null, { user: response });    
+    const existEmail = await authApp.getByEmail(String(profile._json.email), 'local');
+    if (existEmail) return done(null, { user: {}, msg: 'Ya existe un usuario con ese correo' }); 
+    const response = await AuthClt.loginWithGoogle(profile._json as any);
+    done(null, { user: response, msg: 'Bienvenido' });    
 }));
 
 rAuth.use(passport.initialize());
@@ -36,7 +37,7 @@ rAuth.post("/register", [
     check('auth.nickname', 'El nickname es obligatorio').not().isEmpty(),
     check('auth.pass', 'El pass es obligatorio').not().isEmpty(),       
     validationField    
-], AuthClt.addUser.bind(AuthClt));
+], AuthMiddleware.existEmail.bind( AuthMiddleware ) ,AuthClt.addUser.bind(AuthClt));
 
 rAuth.get('/google', passport.authenticate('google', { scope: ['profile', 'email'],
     session: false
@@ -49,7 +50,9 @@ rAuth.get("/redirect/google", passport.authenticate("google",{
     const user = req.user as any;
     res.send(` <script>
       window.opener.postMessage(
-        { token: "${user.user.token}" },
+        { token: "${user.user.token}",
+            msg: "${user.msg}"
+        },
         "http://localhost:4900"
       );
       window.close();

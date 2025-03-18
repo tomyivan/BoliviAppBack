@@ -1,4 +1,4 @@
-import { IAuth, Auth, User, GoogleDTO } from "../../domain";
+import { IAuth, Auth, User, GoogleDTO, UserDTO } from "../../domain";
 import bcrypt from 'bcryptjs';
 import { generateJWT } from "../../helper/jwt";
 import { msg } from "../../helper/email.helper";
@@ -100,4 +100,7 @@ export class AuthApplication {
             throw error;
         }
     };
+    async getByEmail(email: string, issuer?:string): Promise<UserDTO> {
+        return this.auth.getByEmail(email , issuer);
+    }
 }

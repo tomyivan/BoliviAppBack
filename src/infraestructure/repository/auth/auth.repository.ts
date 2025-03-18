@@ -17,6 +17,17 @@ export class AuthRepository implements IAuth {
         }
     }
     
+    async getByEmail(email: string, issuer?: string): Promise<UserDTO> {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .query(AuthQuerys.getUser({ email, issuer }));
+            return result.recordset[0];
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async loginWithGoogle(auth: User): Promise<UserDTO> {
         try {
             const pool = await connectToDatabase();

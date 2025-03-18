@@ -5,5 +5,6 @@ export interface IAuth {
     login: ( auth: Auth ) => Promise<UserDTO>;
     loginWithGoogle: ( auth: User ) => Promise<UserDTO>;
     // loginWithFacebook: ( auth: Auth ) => Promise<Boolean>;
-    addUser: ( user: User ) => Promise<Boolean>;    
+    addUser: ( user: User ) => Promise<Boolean>;   
+    getByEmail: ( email: string, issuer?: string ) => Promise<UserDTO>; 
 }
