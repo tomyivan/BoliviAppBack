@@ -52,7 +52,7 @@ export class AuthController {
         try {
             const { auth } = req.body;
             const code = this._authApplication.generateVerificationCode(auth.email);
-            const response = await this._authApplication.sendVerificationCode(auth.email, code);            
+            const response = await this._authApplication.sendVerificationCode(auth.email, Number(code));            
             return response? ResponseApi.successResponse(res, 'Codigo enviado', response) :
              ResponseApi.errorResponse(res, 'Codigo no enviado', response);
         } catch (error) {
@@ -73,5 +73,28 @@ export class AuthController {
         }
     }
 
-    
+    async existCode( req:Request, res:Response ): Promise<any> {
+        try {
+            const { auth } = req.body;
+            const response = await this._authApplication.getCode( auth );            
+            return response? ResponseApi.successResponse(res, 'Codigo existente', response) :
+            ResponseApi.errorResponse(res, 'Codigo no existente', false);
+        } catch (error) {
+            console.log(error);
+            return ResponseApi.errorResponse(res, 'Error en el servidor', error);
+        }
+    }
+
+    async updatePass( req:Request, res:Response ): Promise<any> {
+        try {
+            const { auth } = req.body;            
+            const response = await this._authApplication.updatePass( auth );            
+            return response? ResponseApi.successResponse(res, 'Contraseña actualizada', response) :
+            ResponseApi.errorResponse(res, 'Contraseña no actualizada', response);
+        } catch (error) {
+            console.log(error);
+            return ResponseApi.errorResponse(res, 'Error en el servidor', error);
+        }
+    }
+
 }

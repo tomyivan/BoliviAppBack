@@ -24,6 +24,20 @@ export class AuthMiddleware {
             const _authApplication = new AuthApplication(_authRepo);
             const response = await _authApplication.verifyCode(auth);
             if (!response) return ResponseApi.errorResponse(res, 'Codigo invalido', null);
+            auth.isVerify = 1;
+            next();
+        } catch (error) {
+            console.log(error);
+            return ResponseApi.errorResponse(res, 'Error al verifcar', error);
+        }
+    }
+    static async noExistEmail(req:Request, res:Response, next:NextFunction) {
+        const { auth } = req.body;
+        try {
+            const _authRepo = new AuthRepository();
+            const _authApplication = new AuthApplication(_authRepo);
+            const response = await _authApplication.getByEmail(auth.email, 'local');
+            if (!response) return ResponseApi.errorResponse(res, 'No existe un usuario con ese correo', null);
             next();
         } catch (error) {
             console.log(error);

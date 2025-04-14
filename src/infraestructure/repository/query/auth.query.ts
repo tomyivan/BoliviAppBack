@@ -10,10 +10,13 @@ export class AuthQuerys {
         if (q?.issuer) query += ` AND editor = '${q.issuer}'`;
         // if (q?.city) query += ` AND ciudad = '${q.city}'`;
         return query;
+
     }
-    static register = () => `INSERT INTO usuarios (token, nombre, apellidos, alias, correo, num_cel, cod_cel, genero, pass, editor, verificado) 
-        VALUES (@token, @name, @lastname, @nickname, @email, @phoneNumber, @codPhone, @gender, @pass, @issuer, @isVerify)`;
+    static register = () => `INSERT INTO usuarios (token, nombre, apellidos, alias, correo, num_cel, cod_cel, genero, pass, editor, verificado,ciudad, estados) 
+        VALUES (@token, @name, @lastname, @nickname, @email, @phoneNumber, @codPhone, @gender, @pass, @issuer, @isVerify, @city, @state)`;
+    static updatePass = () => `UPDATE usuarios SET pass = @pass WHERE correo = @email and editor = 'local'`; 
     static createCode = () => `INSERT INTO codigos ( codigo, correo, fecha_expiracion ) VALUES (@code, @email, DATEADD(MINUTE, 5, GETDATE()))`;
     static updateCode = () => `UPDATE codigos SET fecha_expiracion = DATEADD(MINUTE, 5, GETDATE()), codigo = @code WHERE correo = @email `;
     static deleteCode = () => `DELETE FROM codigos WHERE correo = @email AND codigo = @code AND fecha_expiracion >= GETDATE()`;
+    static getCode = () => `SELECT codigo code FROM codigos WHERE correo = @email AND fecha_expiracion >= GETDATE() AND codigo = @code`;
 }

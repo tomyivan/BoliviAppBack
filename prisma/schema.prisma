@@ -1,0 +1,254 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model usuarios {
+  id_usuario          Int                   @id @default(autoincrement())
+  alias               String                @db.VarChar(40)
+  correo              String                @db.VarChar(30)
+  pass                String                @db.Text
+  editor              String                @db.VarChar(40)
+  verificado          Int                   @default(1)
+  activo              Int                   @default(1)
+
+  usuario_det         usuario_det?
+  historial_usuario   historial_usuario[]
+  asistencia_eventos  asistencia_eventos[]
+}
+
+model roles {
+  id_rol        Int               @id @default(autoincrement())
+  rol           String            @db.VarChar(25)
+
+  usuario_det   usuario_det[]
+  rol_permisos  rol_permisos[]
+}
+
+model usuario_det {
+  id_usuario_det    Int        @id @default(autoincrement())
+  id_usuario        Int        @unique
+  nombre            String     @db.VarChar(25)
+  apellidos         String     @db.VarChar(25)
+  pais              String?    @db.VarChar(35)
+  ciudad            String?    @db.VarChar(35)
+  fecha_nacimiento  DateTime?  @db.Date
+  num_cel           Int?
+  cod_celular       Int?
+  genero            Int?
+  id_rol            Int
+
+  usuarios          usuarios   @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction)
+  roles             roles      @relation(fields: [id_rol], references: [id_rol])
+}
+
+
+
+model rol_permisos {
+  id_rol     Int
+  id_permiso Int
+  permisos   permisos @relation(fields: [id_permiso], references: [id_permiso])
+  roles      roles    @relation(fields: [id_rol], references: [id_rol])
+  
+  @@id([id_rol, id_permiso])
+}
+
+model permisos {
+  id_permiso Int          @id @default(autoincrement())
+  nombre     String       @db.VarChar(25)
+  rol_permisos rol_permisos[]
+}
+
+model historial_usuario {
+  id_historial   Int       @id @default(autoincrement())
+  id_usuario    Int
+  id_metodo     Int
+  accion        String?    @db.VarChar(35)
+  descripcion   String?    @db.Text
+  table_nom     String?    @db.VarChar(40)
+  fecha_creacion DateTime? 
+  usuarios      usuarios   @relation(fields: [id_usuario], references: [id_usuario])
+}
+
+model historias {
+  id_historia    Int                 @id @default(autoincrement())
+  fecha          DateTime            @db.Date
+  titulo         String              @db.VarChar(45)
+  resumen        String              @db.VarChar(120)
+  descripcion    String              @db.Text
+  id_lugar       Int
+  id_categoria   Int
+  lugares        lugares             @relation(fields: [id_lugar], references: [id_lugar])
+  categorias     categorias          @relation(fields: [id_categoria], references: [id_categoria])
+  historia_personajes historia_personajes[]
+}
+
+model historia_personajes {
+  id_personaje Int
+  id_historia  Int
+  personajes_h personajes_h @relation(fields: [id_personaje], references: [id_personaje])
+  historias    historias   @relation(fields: [id_historia], references: [id_historia])
+  
+  @@id([id_personaje, id_historia])
+}
+
+model personajes_h {
+  id_personaje      Int                 @id @default(autoincrement())
+  nombres           String              @db.VarChar(25)
+  apellidos         String              @db.VarChar(30)
+  fecha_nacimiento  DateTime            @db.Date
+  detalle           String              @db.Text
+  historia_personajes historia_personajes[]
+}
+
+model lugares {
+  id_lugar          Int                 @id @default(autoincrement())
+  cod_departamento  String              @db.VarChar(5)
+  nombre            String              @db.VarChar(80)
+  latitud           Float
+  longitud          Float
+  departamentos     departamentos       @relation(fields: [cod_departamento], references: [cod_departamento])
+  historias         historias[]
+  ubicaciones_eventos ubicaciones_eventos[]
+  etnias           etnias[]
+}
+
+model departamentos {
+  cod_departamento String    @id @db.VarChar(5)
+  departamento     String?   @db.VarChar(20)
+  lugares          lugares[]
+}
+
+model codigos_ver {
+  codigo  String  @id @db.VarChar(6)
+  fecha   DateTime @db.Date
+  correo  String  @db.VarChar(30)
+}
+
+model eventos {
+  id_evento        Int                     @id @default(autoincrement())
+  fecha           DateTime                @db.Date
+  inicio          DateTime                @db.Time
+  fin             DateTime?               @db.Time
+  nombre          String                  @db.VarChar(80)
+  detalle         String                  @db.Text
+  id_categoria    Int?
+  categorias      categorias?             @relation(fields: [id_categoria], references: [id_categoria])
+  recursos_eventos recursos_eventos[]
+  eventos_patrocinadores eventos_patrocinadores[]
+  archivo_eventos archivo_eventos[]
+  asistencia_eventos asistencia_eventos[]
+  ubicaciones_eventos ubicaciones_eventos[]
+}
+
+model recursos_eventos {
+  id_recurso_evento Int     @id @default(autoincrement())
+  id_evento        Int
+  id_recurso      Int
+  monto           Float
+  cantidad        Int
+  eventos         eventos  @relation(fields: [id_evento], references: [id_evento])
+  recursos        recursos @relation(fields: [id_recurso], references: [id_recurso])
+}
+
+model recursos {
+  id_recurso Int     @id @default(autoincrement())
+  descripcion String  @db.Text
+  cantidad    Int
+  recursos_eventos recursos_eventos[]
+}
+
+model eventos_patrocinadores {
+  id_evento_patrocinador Int     @id @default(autoincrement())
+  id_evento             Int
+  id_patrocinador      Int
+  producto             String?   @db.VarChar(40)
+  servicio             String?   @db.VarChar(40)
+  cantidad             Int?
+  observacion          String?   @db.Text
+  id_medida           Int
+  eventos             eventos      @relation(fields: [id_evento], references: [id_evento])
+  patrocinadores      patrocinadores @relation(fields: [id_patrocinador], references: [id_patrocinador])
+  medidas             medidas       @relation(fields: [id_medida], references: [id_medida])
+}
+
+model medidas {
+  id_medida Int     @id @default(autoincrement())
+  medida    String  @db.VarChar(20)
+  eventos_patrocinadores eventos_patrocinadores[]
+}
+
+model patrocinadores {
+  id_patrocinador Int     @id @default(autoincrement())
+  patrocinador    String? @db.VarChar(50)
+  eventos_patrocinadores eventos_patrocinadores[]
+}
+
+model archivo_eventos {
+  id_archivo Int     @id @default(autoincrement())
+  nombre     String  @db.VarChar(35)
+  ext        String  @db.VarChar(4)
+  id_evento  Int
+  eventos    eventos @relation(fields: [id_evento], references: [id_evento])
+}
+
+model asistencia_eventos {
+  id_usuario Int
+  id_evento  Int
+  activo     Int      @default(1)
+  usuarios   usuarios @relation(fields: [id_usuario], references: [id_usuario])
+  eventos    eventos  @relation(fields: [id_evento], references: [id_evento])
+  
+  @@id([id_usuario, id_evento])
+}
+
+model categorias {
+  id_categoria      Int         @id @default(autoincrement())
+  id_tipo_categoria Int
+  nombre            String      @db.VarChar(45)
+  activo            Int         @default(1)
+  tipo_categorias   tipo_categorias @relation(fields: [id_tipo_categoria], references: [id_tipo_categoria])
+  historias         historias[]
+  eventos           eventos[]
+}
+
+model ubicaciones_eventos {
+  id_ubicacion_eventos Int     @id @default(autoincrement())
+  id_ubicacion Int     
+  id_evento    Int     
+  eventos      eventos @relation(fields: [id_evento], references: [id_evento], onDelete: NoAction)
+  lugares      lugares @relation(fields: [id_ubicacion], references: [id_lugar], onDelete: NoAction)
+}
+
+model tipo_categorias {
+  id_tipo_categoria Int         @id @default(autoincrement())
+  tipo_categoria    String?     @db.VarChar(40)
+  categorias        categorias[]
+}
+
+model etnias {
+  id_etnia      Int      @id @default(autoincrement())
+  nombre        String?  @db.VarChar(25)
+  id_lugar      Int
+  id_idioma     Int
+  costumbres    String   @db.Text
+  lugares       lugares  @relation(fields: [id_lugar], references: [id_lugar])
+  idiomas       idiomas  @relation(fields: [id_idioma], references: [id_idioma])
+}
+
+model idiomas {
+  id_idioma Int     @id @default(autoincrement())
+  idioma    String  @db.VarChar(20)
+  etnias    etnias[]
+}

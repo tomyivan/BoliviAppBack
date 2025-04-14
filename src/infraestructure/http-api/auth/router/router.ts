@@ -34,6 +34,7 @@ rAuth.post("/register", [
     check('auth.gender', 'El genero es obligatorio').not().isEmpty(),
     check('auth.phoneNumber', 'El numero telefonico es obligatorio').not().isEmpty(),       
     check('auth.city', 'La ciudad es obligatorio').not().isEmpty(),        
+    check('auth.state', 'El estado es obligatorio').not().isEmpty(),        
     check('auth.nickname', 'El nickname es obligatorio').not().isEmpty(),
     check('auth.pass', 'El pass es obligatorio').not().isEmpty(),    
     check('auth.code', 'El codigo es obligatorio').not().isEmpty(),   
@@ -65,7 +66,28 @@ rAuth.post("/send-code", [
     validationField
 ],AuthClt.sendCode.bind(AuthClt));
 
+
+
 rAuth.post("/verify-email", AuthClt.existEmail.bind(AuthClt));
+
+rAuth.post("/send-code-reset", [
+    check('auth.email', 'El email es obligatorio').not().isEmpty(),
+    validationField
+], AuthMiddleware.noExistEmail.bind( AuthMiddleware ) ,AuthClt.sendCode.bind(AuthClt));
+
+rAuth.post("/exist-code", [
+    check('auth.code', 'El codigo es obligatorio').not().isEmpty(),
+    check('auth.email', 'El email es obligatorio').not().isEmpty(),
+    validationField
+], AuthClt.existCode.bind(AuthClt));
+
+rAuth.post("/update-pass", [
+    check('auth.email', 'El email es obligatorio').not().isEmpty(),
+    check('auth.pass', 'El pass es obligatorio').not().isEmpty(),
+    check('auth.code', 'El codigo es obligatorio').not().isEmpty(),
+    validationField
+], AuthMiddleware.verifyCode.bind( AuthMiddleware ), AuthClt.updatePass.bind(AuthClt));
+
 export {
     rAuth
 }

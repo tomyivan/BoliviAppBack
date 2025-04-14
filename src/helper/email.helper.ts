@@ -1,11 +1,11 @@
 // import nodemailer from 'nodemailer';
 import 'dotenv/config';
-export const msg = (email:string, code:string)  => ({
+export const msg = (email:string, code:number)  => ({
     to: email, // Campo "to" es obligatorio
     from: `${String(process.env.SENDGRID_EMAIL)}`, // Correo verificado en SendGrid
     subject: 'Código de verificación',
-    text: `Tu código de verificación es: ${code}`,
-    html: `<p>Tu código de verificación es: <strong>${code}</strong></p>`
+    text: `Tu código de verificación es: ${String(code)}`,
+    html: `<p>Tu código de verificación es: <strong>${String(code)}</strong></p>`
   })
 // export const transporter = nodemailer.createTransport({
 //     host: process.env.EMAIL_HOST,

@@ -62,6 +62,8 @@ export class AuthRepository implements IAuth {
                     .input('gender', sql.Int, user.gender)
                     .input('isVerify', sql.Int, user.verify ? 1 : 0)
                     .input('issuer', sql.VarChar, user.issuer ?? 'local')
+                    .input('city', sql.VarChar, user.city)
+                    .input('state', sql.VarChar, user.state)
                 .query(AuthQuerys.register());
             
             return result.rowsAffected.length > 0;
@@ -75,7 +77,7 @@ export class AuthRepository implements IAuth {
             const pool = await connectToDatabase();
             const result = await pool.request()
                 .input('email', sql.VarChar, data.email)
-                .input('code', sql.VarChar, data.code)
+                .input('code', sql.Int, data.code)
                 .query(AuthQuerys.createCode());
             return result.rowsAffected[0] > 0;        
         } catch (error) {
@@ -88,7 +90,7 @@ export class AuthRepository implements IAuth {
             const pool = await connectToDatabase();
             const result = await pool.request()
                 .input('email', sql.VarChar, data.email)
-                .input('code', sql.VarChar, data.code)
+                .input('code', sql.Int, data.code)
                 .query(AuthQuerys.updateCode());
             console.log(result);
             return result.rowsAffected[0] > 0;
@@ -104,6 +106,33 @@ export class AuthRepository implements IAuth {
                 .input('email', sql.VarChar, data.email)
                 .input('code', sql.VarChar, String(data.code))
                 .query(AuthQuerys.deleteCode());
+            return result.rowsAffected[0] > 0;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getCode(data: CodeVerify): Promise<Boolean> {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .input('email', sql.VarChar, data.email)
+                .input('code', sql.VarChar, data.code)
+                .query(AuthQuerys.getCode());
+            console.log( result.recordset[0]?.code === Number(data.code) );
+            return result.recordset[0]?.code === Number(data.code);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async updatePass(data: Auth) : Promise<Boolean> {
+        try {
+            const pool = await connectToDatabase();
+            const result = await pool.request()
+                .input('email', sql.VarChar, data.email)
+                .input('pass', sql.VarChar, data.pass)
+                .query(AuthQuerys.updatePass());
             return result.rowsAffected[0] > 0;
         } catch (error) {
             throw error;

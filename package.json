@@ -10,10 +10,12 @@
   "author": "filito",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "6.6.0",
     "@sendgrid/mail": "^8.1.4",
     "@types/express": "^4.17.21",
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth20": "^2.0.16",
+    "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -37,6 +39,7 @@
     "@types/node": "^22.13.9",
     "@types/nodemailer": "^6.4.17",
     "nodemon": "^3.1.9",
+    "prisma": "^6.6.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }

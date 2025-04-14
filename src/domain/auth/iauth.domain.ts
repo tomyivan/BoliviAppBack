@@ -10,4 +10,6 @@ export interface IAuth {
     createCode: ( data: CodeVerify  ) => Promise<Boolean>;   
     updateCode: ( data: CodeVerify ) => Promise<Boolean>;
     verifyCode: ( data: CodeVerify ) => Promise<Boolean>;
+    getCode: ( data: CodeVerify ) => Promise<Boolean>;
+    updatePass: ( data: Auth ) => Promise<Boolean>;
 }

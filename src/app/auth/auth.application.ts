@@ -47,9 +47,11 @@ export class AuthApplication {
             phoneNumber: 0,
             pass:  this.generatePass(data.sub),
             city: "",
+            state: "",
             gender: 1,
             lastname: data.family_name,
             issuer: "google",
+            verify: 1,
         }
         const response = await this.auth.loginWithGoogle(auth);
         if (!response) return false;        
@@ -64,7 +66,7 @@ export class AuthApplication {
             codPhone: response.codPhone,
             city: response.city,
             rol: response.rol,
-            isVerify: response.isVerify,
+            isVerify: 1,
         };
         const token = await generateJWT(payload);
         return {
@@ -91,7 +93,7 @@ export class AuthApplication {
         return code;
     };
 
-    async sendVerificationCode(email: string, code: string): Promise<Boolean> {
+    async sendVerificationCode(email: string, code: number): Promise<Boolean> {
         sgMail.setApiKey(String(process.env.SENDGRID_API_KEY))   
         try {
             const isUpdate = await this.auth.updateCode({email, code});
@@ -111,5 +113,14 @@ export class AuthApplication {
     
     async verifyCode(data: CodeVerify): Promise<Boolean> {
         return this.auth.verifyCode(data);
+    }
+
+    async getCode(data: CodeVerify): Promise<Boolean> {
+        return this.auth.getCode(data);
+    }
+
+    async updatePass(data: Auth): Promise<Boolean> {
+        const pass = this.generatePass(data.pass);
+        return this.auth.updatePass({...data, pass});
     }
 }
