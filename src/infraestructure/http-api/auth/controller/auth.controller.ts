@@ -65,7 +65,7 @@ export class AuthController {
         try {
             const { auth } = req.body;
             const response = await this._authApplication.getByEmail( auth.email );            
-            return response? ResponseApi.successResponse(res, 'Email existente', true) :
+            return response?.idUser ? ResponseApi.successResponse(res, 'Email existente', true) :
             ResponseApi.errorResponse(res, 'Email no existente', false);
         } catch (error) {
             console.log(error);

@@ -1,16 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { ResponseApi } from "../../util";
 import { AuthRepository } from "../../infraestructure/repository";
-import { AuthApplication } from "../../app";
+import { authApp } from "../../infraestructure/dependences/auth.dependences";
 
 export class AuthMiddleware {
     static async existEmail(req:Request, res:Response, next:NextFunction) {
         const { auth } = req.body;
         try {
-            const _authRepo = new AuthRepository();
-            const _authApplication = new AuthApplication(_authRepo);
-            const response = await _authApplication.getByEmail(auth.email);
-            if (response) return ResponseApi.errorResponse(res, 'Ya existe un usuario con ese correo', null);
+            const response = await authApp.getByEmail(auth.email);
+            if (response?.idUser) return ResponseApi.errorResponse(res, 'Ya existe un usuario con ese correo', null);
             next();
         } catch (error) {
             console.log(error);
@@ -20,9 +18,7 @@ export class AuthMiddleware {
     static async verifyCode(req:Request, res:Response, next:NextFunction) {
         const { auth } = req.body;
         try {
-            const _authRepo = new AuthRepository();
-            const _authApplication = new AuthApplication(_authRepo);
-            const response = await _authApplication.verifyCode(auth);
+            const response = await authApp.verifyCode(auth);
             if (!response) return ResponseApi.errorResponse(res, 'Codigo invalido', null);
             auth.isVerify = 1;
             next();
@@ -34,9 +30,7 @@ export class AuthMiddleware {
     static async noExistEmail(req:Request, res:Response, next:NextFunction) {
         const { auth } = req.body;
         try {
-            const _authRepo = new AuthRepository();
-            const _authApplication = new AuthApplication(_authRepo);
-            const response = await _authApplication.getByEmail(auth.email, 'local');
+            const response = await authApp.getByEmail(auth.email, 'local');
             if (!response) return ResponseApi.errorResponse(res, 'No existe un usuario con ese correo', null);
             next();
         } catch (error) {

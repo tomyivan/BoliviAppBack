@@ -1,46 +1,29 @@
 import { CodeVerify,  IAuth, UserDTO } from "../../../domain";
-import { sql, connectToDatabase } from "../datasource/connection";
 import { Auth, User } from "../../../domain";
 import { AuthQuerys } from "../query/auth.query";
+import { PrismaClient } from "@prisma/client";
+import { Execute } from "../datasource/querys.execute";
 export class AuthRepository implements IAuth {
+    constructor( private readonly _prisma: PrismaClient ) {}
     async refreshToken(auth: Auth): Promise<Auth> {
         throw new Error("Method not implemented.");
     }
     async login(auth: Auth): Promise<UserDTO> {
-        try {        
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .query(AuthQuerys.getUser({...auth, issuer: 'local'}));
-            return result.recordset[0];
-        } catch (error) {
-            throw error;
-        }
+        return Execute.getSingleData(AuthQuerys.getUser({...auth, issuer: 'local'}), {} as UserDTO, this._prisma);
     }
     
     async getByEmail(email: string, issuer?: string): Promise<UserDTO> {
-        try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .query(AuthQuerys.getUser({ email, issuer }));
-            return result.recordset[0];
-        } catch (error) {
-            throw error;
-        }
+        return Execute.getSingleData(AuthQuerys.getUser({ email, issuer }), {} as UserDTO, this._prisma);
     }
 
     async loginWithGoogle(auth: User): Promise<UserDTO> {
         try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .query(AuthQuerys.getUser({
-                    email: auth.email,
-                    issuer: 'google'}));
-            const data = result.recordset[0];
-            if (!data) {
+            const response = await Execute.getSingleData(AuthQuerys.getUser({ email: auth.email, issuer: 'google' }), {} as UserDTO, this._prisma);
+            if (!response?.idUser) {
                 this.addUser(auth);
-                return this.loginWithGoogle({...auth, verify: 1});
+                return this.loginWithGoogle({ ...auth, verify: 1 });
             }
-            return data;
+            return response;
         } catch (error) {
             throw error;
         }
@@ -49,51 +32,57 @@ export class AuthRepository implements IAuth {
     
     async addUser(user: User): Promise<boolean> {
         try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                    .input('email', sql.VarChar, user.email)
-                    .input('name', sql.VarChar, user.name)
-                    .input('token', sql.VarChar, user.token)
-                    .input('lastname', sql.VarChar, user.lastname)
-                    .input('nickname', sql.VarChar, user.nickname)
-                    .input('phoneNumber', sql.Int, user.phoneNumber)
-                    .input('codPhone', sql.Int, 591)
-                    .input('pass', sql.VarChar, user.pass)
-                    .input('gender', sql.Int, user.gender)
-                    .input('isVerify', sql.Int, user.verify ? 1 : 0)
-                    .input('issuer', sql.VarChar, user.issuer ?? 'local')
-                    .input('city', sql.VarChar, user.city)
-                    .input('state', sql.VarChar, user.state)
-                .query(AuthQuerys.register());
-            
-            return result.rowsAffected.length > 0;
+            return await this._prisma.$transaction(async (pr) => {
+                const auth = await pr.usuarios.create({
+                    data: {
+                        alias: user.nickname,
+                        correo: user.email,
+                        pass: user.pass,
+                        editor: user.issuer ?? 'local',
+                        verificado: user.verify ? 1 : 0,
+                    }
+                });
+                await pr.usuario_det.create({
+                    data: {
+                        id_usuario: auth.id_usuario,
+                        nombre: user.name,
+                        apellidos: user.lastname,
+                        num_cel: Number(user.phoneNumber),
+                        cod_celular: 591,
+                        genero: user.gender,
+                        id_rol: 5,
+                        pais: user.city,
+                        ciudad: user.state,
+                    }
+                })
+                return Boolean(auth);
+            });
         } catch (error) {
             throw error;
         }
     }
 
-    async createCode(data: CodeVerify): Promise<Boolean> {
+    async createCode(code: CodeVerify): Promise<Boolean> {
         try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .input('email', sql.VarChar, data.email)
-                .input('code', sql.Int, data.code)
-                .query(AuthQuerys.createCode());
-            return result.rowsAffected[0] > 0;        
+            await this._prisma.codigos_ver.create({
+                data:{
+                    codigo: String(code.code),
+                    correo: code.email,
+                }
+            })
+            return true;  
         } catch (error) {
-            throw error;
+            throw error;            
         }
     }
     
     async updateCode( data: CodeVerify ): Promise<Boolean> {
         try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .input('email', sql.VarChar, data.email)
-                .input('code', sql.Int, data.code)
-                .query(AuthQuerys.updateCode());
-            console.log(result);
-            return result.rowsAffected[0] > 0;
+            await this._prisma.codigos_ver.updateMany({
+                where: { correo: data.email },
+                data: { codigo: String(data.code) },
+            });
+            return true;
         } catch (error) {
             throw error;
         }
@@ -101,39 +90,27 @@ export class AuthRepository implements IAuth {
 
     async verifyCode(data: CodeVerify): Promise<Boolean> {
         try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .input('email', sql.VarChar, data.email)
-                .input('code', sql.VarChar, String(data.code))
-                .query(AuthQuerys.deleteCode());
-            return result.rowsAffected[0] > 0;
+            await this._prisma.codigos_ver.deleteMany({
+                where: { correo: data.email, codigo: String(data.code) },
+            });
+            return true;
         } catch (error) {
             throw error;
         }
     }
 
     async getCode(data: CodeVerify): Promise<Boolean> {
-        try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .input('email', sql.VarChar, data.email)
-                .input('code', sql.VarChar, data.code)
-                .query(AuthQuerys.getCode());
-            console.log( result.recordset[0]?.code === Number(data.code) );
-            return result.recordset[0]?.code === Number(data.code);
-        } catch (error) {
-            throw error;
-        }
+        const code = await Execute.getSingleData(AuthQuerys.getCode(String(data.code), data.email), {} as CodeVerify, this._prisma);
+        return String(code?.code) === String(data.code);
     }
 
     async updatePass(data: Auth) : Promise<Boolean> {
         try {
-            const pool = await connectToDatabase();
-            const result = await pool.request()
-                .input('email', sql.VarChar, data.email)
-                .input('pass', sql.VarChar, data.pass)
-                .query(AuthQuerys.updatePass());
-            return result.rowsAffected[0] > 0;
+            await this._prisma.usuarios.updateMany({
+                where: { correo: String(data.email) },
+                data: { pass: data.pass },
+            });
+            return true;
         } catch (error) {
             throw error;
         }

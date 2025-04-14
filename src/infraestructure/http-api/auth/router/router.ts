@@ -14,8 +14,8 @@ passport.use(new googleStrategy({
     callbackURL: '/api/v1/p/auth/redirect/google',
     scope: ['profile']
 }, async (token, refreshToken,  profile, done) => {
-    const existEmail = await authApp.getByEmail(String(profile._json.email), 'local');
-    if (existEmail) return done(null, { user: {}, msg: 'Ya existe un usuario con ese correo' }); 
+    const existEmail = await authApp.getByEmail(String(profile._json.email), 'local');    
+    if (existEmail?.idUser) return done(null, { user: {}, msg: 'Ya existe un usuario con ese correo' }); 
     const response = await AuthClt.loginWithGoogle(profile._json as any);
     done(null, { user: response, msg: 'Bienvenido' });    
 }));
