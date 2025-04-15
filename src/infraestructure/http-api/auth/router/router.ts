@@ -20,6 +20,8 @@ passport.use(new googleStrategy({
     done(null, { user: response, msg: 'Bienvenido' });    
 }));
 
+rAuth.get('/refreshToken', validationJWT, AuthClt.refreshToken.bind(AuthClt));
+
 rAuth.use(passport.initialize());
 rAuth.post('/login',  
     [

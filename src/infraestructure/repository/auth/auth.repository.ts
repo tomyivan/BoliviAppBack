@@ -3,10 +3,20 @@ import { Auth, User } from "../../../domain";
 import { AuthQuerys } from "../query/auth.query";
 import { PrismaClient } from "@prisma/client";
 import { Execute } from "../datasource/querys.execute";
+import { generateJWT } from "../../../helper/jwt";
 export class AuthRepository implements IAuth {
     constructor( private readonly _prisma: PrismaClient ) {}
-    async refreshToken(auth: Auth): Promise<Auth> {
-        throw new Error("Method not implemented.");
+    async refreshToken(auth: Auth): Promise<any> {
+        try {            
+            const token = await generateJWT(auth);
+            return {
+                ...auth,
+                token,
+            }
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
     async login(auth: Auth): Promise<UserDTO> {
         return Execute.getSingleData(AuthQuerys.getUser({...auth, issuer: 'local'}), {} as UserDTO, this._prisma);

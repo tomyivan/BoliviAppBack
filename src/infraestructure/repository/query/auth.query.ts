@@ -3,7 +3,7 @@ import { AuthQuery } from "../../../domain";
 export class AuthQuerys {
     static getUser = ( q : AuthQuery ) => {
         let query = `SELECT id_usuario idUser, nombre name, apellidos lastname, alias nickname, correo email, num_cel phoneNumber,
-            cod_celular codPhone, genero gender,  pass, editor issuer, id_rol, verificado isVerify
+            cod_celular codPhone, genero gender,  pass, editor issuer, id_rol rol, verificado isVerify
         FROM usuarios_view WHERE 1 = 1`;
         if (q?.email) query += ` AND correo = '${q.email}'`;
         if (q?.nickname) query += ` AND alias = '${q.nickname}'`;

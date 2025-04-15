@@ -26,7 +26,6 @@ export class AuthApplication {
             gender: response.gender,
             phoneNumber: response.phoneNumber,
             codPhone: response.codPhone,
-            city: response.city,
             rol: response.rol,
             isVerify: response.isVerify,
         };

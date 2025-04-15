@@ -22,7 +22,6 @@ const validationJWT = async (req: Request, res: Response, next: any) => {
         req.gender = gender;
         req.phoneNumber = phoneNumber;
         req.codPhone = codPhone;
-        req.city = city;
         req.rol = rol;
         req.isVerify = isVerify;        
         next();

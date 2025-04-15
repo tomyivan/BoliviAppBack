@@ -7,7 +7,17 @@ export class AuthController {
     async refreshToken(req:Request, res:Response): Promise<Response> {
         const auth = req;              
         try {
-            const response = await this._authApplication.refreshToken(auth as any);            
+            const newAuth = {
+                email: auth.email,
+                name: auth.name,
+                nickname: auth.nickname,
+                gender: auth.gender,
+                phoneNumber: auth.phoneNumber,
+                codPhone: auth.codPhone,
+                rol: auth.rol,
+                isVerify: auth.isVerify,
+            };
+            const response = await this._authApplication.refreshToken(newAuth as any);            
             return ResponseApi.successResponse(res, 'Token actualizado', response);
         } catch (error) {
             console.log(error);

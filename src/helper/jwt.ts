@@ -8,7 +8,6 @@ interface Payload {
     gender: number,
     phoneNumber: number,
     codPhone: number,     
-    city?: number,
     rol: number,
     isVerify: number, 
 }
