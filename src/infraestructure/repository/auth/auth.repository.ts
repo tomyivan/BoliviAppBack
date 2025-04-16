@@ -30,7 +30,7 @@ export class AuthRepository implements IAuth {
         try {
             const response = await Execute.getSingleData(AuthQuerys.getUser({ email: auth.email, issuer: 'google' }), {} as UserDTO, this._prisma);
             if (!response?.idUser) {
-                this.addUser(auth);
+                await this.addUser(auth);
                 return this.loginWithGoogle({ ...auth, verify: 1 });
             }
             return response;
@@ -68,7 +68,8 @@ export class AuthRepository implements IAuth {
                 return Boolean(auth);
             });
         } catch (error) {
-            throw error;
+            console.log(error);
+            return false;
         }
     }
 
