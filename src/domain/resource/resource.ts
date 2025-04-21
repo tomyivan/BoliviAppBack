@@ -1,11 +1,11 @@
 export interface Resource {
     idResource?: number;
-    description: string;
+    name: string;
     stock:number;
 }
 
 export interface ResourceDTO {
-    idResource?: number;
-    description: string;
+    id: number;
+    name: string;
     stock:number;
 }

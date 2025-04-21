@@ -1,8 +1,11 @@
-import { IDependences, List2 } from "../../domain";
+import { Departaments, IDependences, List } from "../../domain";
 export class DependencesApplication {
     constructor( private dependencesDomain: IDependences ){}
     
-    getDepartments () :Promise<List2[]> {
+    getDepartments () :Promise<Departaments[]> {
         return this.dependencesDomain.getDepartments();    
+    }
+    getMeasures () :Promise<List[]> {
+        return this.dependencesDomain.getMeasures();    
     }
 }

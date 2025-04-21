@@ -14,4 +14,14 @@ export class DependencesController {
             return ResponseApi.errorResponse(res, 'Error en el servidor', error);
         }
     }
+    async getMeasures (req: Request, res: Response): Promise<Response> {
+        try {
+            const response = await this._dependencesApplication.getMeasures();            
+            return response.length === 0 ? ResponseApi.notFoundResponse(res, 'No hay medidas', response) :
+            ResponseApi.successResponse(res, 'Medidas obtenidas', response);
+        } catch (error) {
+            console.log(error);
+            return ResponseApi.errorResponse(res, 'Error en el servidor', error);
+        }
+    }
 }

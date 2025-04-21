@@ -1,6 +1,6 @@
-import { List2 } from "..";
+import { Departaments, List } from "..";
 
 export interface IDependences {
-    getDepartments: () => Promise<List2[]>;
-    getMeasures: () => Promise<List2[]>;
+    getDepartments: () => Promise<Departaments[]>;
+    getMeasures: () => Promise<List[]>;
 }

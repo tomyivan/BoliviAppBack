@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { Events, IEvent } from "../../../domain";
-
+import { Events, IEvent, List } from "../../../domain";
+import { Execute } from "../datasource/querys.execute";
+import { EventsQuery } from "../query/events.query";
 export class EventRepository implements IEvent {
     constructor( private readonly prisma: PrismaClient ) {}
     async getEvents(): Promise<any> {
@@ -8,6 +9,9 @@ export class EventRepository implements IEvent {
     }
     async getEventById(idEvent: number): Promise<any> {
         throw new Error("Method not implemented.");
+    }
+    async getCategoryEvents(): Promise<List[]> {
+        return Execute.getData(EventsQuery.getCategoryEvents);
     }
     async createEvent(eventData: Events, idUserCreate: number): Promise<Boolean> {  
         try {

@@ -1,10 +1,9 @@
-import { List2 } from "..";
+import { List } from "..";
 import { Sponsor } from "./sponsor";
 
-export interface ISponsor {
-    getSponsor: () => Promise<List2[]>;
-    getSponsorById: (idSponsor: number) => Promise<Sponsor>;
-    addSponsor: (sponsor: Sponsor) => Promise<Sponsor>;
-    updateSponsor: (sponsor: Sponsor) => Promise<Sponsor>;
+export interface ISponsorDomain {
+    getSponsor: (id?: number) => Promise<List[]>;
+    addSponsor: (sponsor: Sponsor) => Promise<boolean>;
+    updateSponsor: (sponsor: Sponsor) => Promise<boolean>;
     deleteSponsor: (idSponsor: number) => Promise<boolean>;
 }

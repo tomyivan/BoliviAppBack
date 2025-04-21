@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validationField } from "../../../../middleware";
+import { validationField, validationJWT } from "../../../../middleware";
 import { check } from "express-validator";
 import { eventsClt } from "../../../dependences/event.dependences";
 const rEvent = Router();
@@ -16,5 +16,5 @@ rEvent.post('/add', [
     check('event.location.longitude', 'La longitud es obligatoria').not().isEmpty(),
     check('event.location.codDepartment', 'El departamento es obligatorio').not().isEmpty(),
     validationField ], eventsClt.createEvent.bind(eventsClt) );
-
+rEvent.get('/type/categories', validationJWT , eventsClt.getCategoryEvents.bind(eventsClt));
 export { rEvent };

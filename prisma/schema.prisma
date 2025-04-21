@@ -104,8 +104,8 @@ model lugares {
   id_lugar            Int                   @id @default(autoincrement())
   cod_departamento    String                @db.VarChar(5)
   nombre              String                @db.VarChar(80)
-  latitud             Float
-  longitud            Float
+  latitud             Float?
+  longitud            Float?
   etnias              etnias[]
   historias           historias[]
   departamentos       departamentos         @relation(fields: [cod_departamento], references: [cod_departamento])
@@ -115,6 +115,8 @@ model lugares {
 model departamentos {
   cod_departamento String    @id @db.VarChar(5)
   departamento     String?   @db.VarChar(20)
+  lat              Float?
+  lng              Float?
   lugares          lugares[]
 }
 
@@ -152,8 +154,9 @@ model recursos_eventos {
 
 model recursos {
   id_recurso       Int                @id @default(autoincrement())
-  descripcion      String             @db.Text
+  nombre           String             @db.Text
   cantidad         Int
+  cantidad_act     Int?               @default(0, map: "DF__recursos__cantid__100C566E")
   recursos_eventos recursos_eventos[]
 }
 
