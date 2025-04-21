@@ -53,8 +53,8 @@ export class EventRepository implements IEvent {
                     data: eventData.resources.map((resource) => ({
                         id_recurso: resource.idResource,
                         id_evento: event.id_evento,
-                        cantidad: resource.amount,
-                        monto: resource.stock,
+                        cantidad: Number(resource.amount),
+                        monto: Number(resource.stock),
                     }))
                 });
                 // await pr.archivo_eventos.createMany({

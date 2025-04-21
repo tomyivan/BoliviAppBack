@@ -12,8 +12,8 @@ rEvent.post('/add', [
     check('event.endTime', 'La hora de fin es obligatoria').not().isEmpty(),
     check('event.idCategory', 'La categoria es obligatoria').not().isEmpty(),
     check('event.location.name', 'La ubicacion es obligatoria').not().isEmpty(),
-    check('event.location.latitude', 'La latitud es obligatoria').not().isEmpty(),
-    check('event.location.longitude', 'La longitud es obligatoria').not().isEmpty(),
+    // check('event.location.latitude', 'La latitud es obligatoria').not().isEmpty(),
+    // check('event.location.longitude', 'La longitud es obligatoria').not().isEmpty(),
     check('event.location.codDepartment', 'El departamento es obligatorio').not().isEmpty(),
     validationField ], eventsClt.createEvent.bind(eventsClt) );
 rEvent.get('/type/categories', validationJWT , eventsClt.getCategoryEvents.bind(eventsClt));

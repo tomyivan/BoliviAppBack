@@ -52,6 +52,15 @@ async function main(){
                 { cod_departamento: "OR", departamento: "Oruro", lat: -17.9667, lng: -67.1333 },
             ]
         });
+        await pr.roles.createMany({
+            data: [
+                { rol: "administrador" },
+                { rol: "cultural" },
+                { rol: "academico" },
+                { rol: "organizador" },
+                { rol: "operativo" },
+            ]
+        });
     })
 }
 
