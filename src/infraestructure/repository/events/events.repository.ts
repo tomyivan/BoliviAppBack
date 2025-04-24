@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { Events, IEvent, List } from "../../../domain";
+import { Events, EventSimpleDTO, IEvent, List, EventFilters } from "../../../domain";
 import { Execute } from "../datasource/querys.execute";
 import { EventsQuery } from "../query/events.query";
 export class EventRepository implements IEvent {
     constructor( private readonly prisma: PrismaClient ) {}
+    async getSimpleEvents(q? : EventFilters): Promise<EventSimpleDTO[]> {
+        return await Execute.getData(EventsQuery.getSimpleEvents(q));
+    }
     async getEvents(): Promise<any> {
         throw new Error("Method not implemented.");
     }

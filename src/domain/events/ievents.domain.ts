@@ -1,6 +1,8 @@
-import { EventDTO, Events, List } from "..";
+import { EventDTO, Events, List, EventFilters, EventSimpleDTO } from "..";
+
 
 export interface IEvent {
+    getSimpleEvents: (q?: EventFilters) => Promise<EventSimpleDTO[]>;
     getEvents: () => Promise<EventDTO[]>;
     getEventById: ( idEvent: number ) => Promise<EventDTO>;
     getCategoryEvents: (  ) => Promise<List[]>;

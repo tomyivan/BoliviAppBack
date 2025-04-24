@@ -8,8 +8,17 @@ export interface EventDTO {
     detail: string;
     category: number;
     location: string;    
-
 }
+
+export interface EventSimpleDTO {
+    idEvent: number;
+    date: string;
+    startTime: string;
+    endTime: string;
+    title: string;
+}
+
+
 export interface Events {
     date: string;
     startTime: string;
@@ -58,3 +67,16 @@ export interface SponsorEvent {
     idMeasure: number;
 }
 
+export interface EventFilters {
+    date?: string;
+    startTime?: string;
+    endTime?: string;
+    name?: string;
+    detail?: string;
+    idCategory?: number;
+    dateRange?: {
+        from: string;
+        to: string;
+    }
+
+}

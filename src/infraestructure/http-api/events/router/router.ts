@@ -4,6 +4,8 @@ import { check } from "express-validator";
 import { eventsClt } from "../../../dependences/event.dependences";
 const rEvent = Router();
 
+rEvent.get('/simple', validationJWT , eventsClt.getSimpleEvents.bind(eventsClt) );
+
 rEvent.post('/add', [
     check('event.name', 'El nombre es obligatorio').not().isEmpty(),
     check('event.detail', 'El detalle es obligatorio').not().isEmpty(),
