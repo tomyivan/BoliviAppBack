@@ -134,6 +134,7 @@ model eventos {
   nombre                 String                   @db.VarChar(80)
   detalle                String                   @db.Text
   id_categoria           Int?
+  activo                 Int?                     @default(1, map: "DF__eventos__activo__04E4BC85") @db.TinyInt
   archivo_eventos        archivo_eventos[]
   asistencia_eventos     asistencia_eventos[]
   categorias             categorias?              @relation(fields: [id_categoria], references: [id_categoria])
