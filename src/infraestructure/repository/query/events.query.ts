@@ -21,8 +21,8 @@ export class EventsQuery {
         if ( q?.idCategory ) {
             query += `${query} AND id_categoria = ${q.idCategory}`;
         }
-        if ( q?.dateRange ) {
-            query += `${query} AND fecha BETWEEN '${q.dateRange.from}' AND '${q.dateRange.to}'`;
+        if ( q?.from && q?.to ) {
+            query += `${query} AND fecha BETWEEN '${q.from}' AND '${q.to}'`;
         }
         return query;
     }

@@ -7,7 +7,8 @@ export class EventsController {
     async getSimpleEvents( req: Request, res: Response ) {
         try {
             const { q } = req.query;
-            const response = await this._eventsApplication.getSimpleEvents( q as EventFilters );
+            console.log( q );
+            const response = await this._eventsApplication.getSimpleEvents( );
             return response.length > 0 ? ResponseApi.successResponse( res, 'Eventos obtenidos', response ) :
             ResponseApi.errorResponse( res, 'No se econtraron eventos', [] );
         } catch ( error ) {

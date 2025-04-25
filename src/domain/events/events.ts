@@ -73,10 +73,8 @@ export interface EventFilters {
     endTime?: string;
     name?: string;
     detail?: string;
-    idCategory?: number;
-    dateRange?: {
-        from: string;
-        to: string;
-    }
+    idCategory?: string;    
+    from: string;
+    to: string;    
 
 }
