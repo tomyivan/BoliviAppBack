@@ -1,4 +1,4 @@
-import { ISponsorDomain } from "../../domain";
+import { ISponsorDomain, Sponsor } from "../../domain";
 
 export class SponsorApplication {
     constructor( private readonly _sponsorDomain: ISponsorDomain ) {}
@@ -14,4 +14,5 @@ export class SponsorApplication {
     async deleteSponsor(idSponsor: number): Promise<Boolean> {
         return this._sponsorDomain.deleteSponsor(idSponsor);
     }
+
 }

@@ -7,6 +7,7 @@ export class SponsorRepository implements ISponsorDomain {
     async getSponsor(idSponsor?: number): Promise<List[]> {
         return Execute.getData(SponsorQuery.getSponsor(idSponsor))
     }
+
     async addSponsor( data: Sponsor ) {
         try {
             const response = await this.prisma.patrocinadores.create({

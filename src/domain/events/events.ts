@@ -1,14 +1,21 @@
-import { Locations } from ".."
+import { List, Locations } from ".."
 export interface EventDTO {
     idEvent: number;
-    date: string;
+    dateEvent: string;
     startTime: string;
     endTime: string;
     name: string;
     detail: string;
-    category: number;
-    location: string;    
+    idCategory: number;
+    category: string;
+    latitude: number;
+    longitude: number;
+    locationEvent: string;
+    departament: string;
+    codDepartment: string;
+    idLocation: number;    
 }
+
 
 export interface EventSimpleDTO {
     idEvent: number;
@@ -28,7 +35,6 @@ export interface Events {
     idCategory: number;
     idEvent?: number;
     location: Locations;
-    file: FileEvent[];
     sponsors: SponsorEvent[];
     resources: ResourceEvent[];
 }

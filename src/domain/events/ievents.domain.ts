@@ -1,4 +1,4 @@
-import { EventDTO, Events, List, EventFilters, EventSimpleDTO } from "..";
+import { EventDTO, Events, List, EventFilters, EventSimpleDTO, FileEvent, SponsorEvent } from "..";
 
 
 export interface IEvent {
@@ -9,4 +9,9 @@ export interface IEvent {
     createEvent: ( event: Events, idUserCreate:number ) => Promise<Boolean>;
     updateEvent: ( event: Events, idUserUpdate:number ) => Promise<Boolean>;
     deleteEvent: ( idEvent: number ) => Promise<Boolean>;
+    uploadImage: ( file: FileEvent, idUser: number ) => Promise<Boolean>;
+    getImages: ( idEvent: number ) => Promise<FileEvent[]>;
+    dropImage: ( idFile: number ) => Promise<Boolean>;
+    getEventSponsors: ( idEvent: number ) => Promise<SponsorEvent[]>;
+    getEventResources: ( idEvent: number ) => Promise<any[]>;
 }

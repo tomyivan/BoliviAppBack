@@ -6,4 +6,5 @@ export class SponsorQuery {
         }
         return query;
     }
+
 }
