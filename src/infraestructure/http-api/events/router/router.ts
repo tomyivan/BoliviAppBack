@@ -57,4 +57,5 @@ rEvent.delete('/file/drop', validationJWT,
   ,EventFileMiddleware.dropFile.bind(EventFileMiddleware),
 eventsClt.dropImage.bind(eventsClt) );
 
+rEvent.get('/info/:idEvent', validationJWT , eventsClt.getEventInfo.bind(eventsClt) );
 export { rEvent };

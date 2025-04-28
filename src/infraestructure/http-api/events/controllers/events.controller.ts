@@ -88,4 +88,14 @@ export class EventsController {
             return ResponseApi.errorResponse( res, 'Error en el servidor', error );
         }
     }
+    async getEventInfo( req: Request, res: Response ) {
+        try {
+            const { idEvent } = req.params;
+            const response = await this._eventsApplication.getEventInfo( Number(idEvent) );
+            return response.idEvent ? ResponseApi.successResponse( res, 'Evento Obtenido', response ) :
+            ResponseApi.errorResponse( res, 'No se econtraron eventos', false );
+        } catch ( error ) {
+            return ResponseApi.errorResponse( res, 'Error en el servidor', error );
+        }
+    }
 }

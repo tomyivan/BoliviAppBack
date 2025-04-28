@@ -1,8 +1,9 @@
-import { EventFilters, Events, EventSimpleDTO, FileEvent, IEvent, List } from "../../domain";
+import { EventFilters, EventInfo, Events, EventSimpleDTO, FileEvent, IEvent, List } from "../../domain";
 import dayjs from "dayjs";
 
 export class EventsApplication {
     constructor( private readonly _events: IEvent ) {}
+
     async getEventById( idEvent: number ): Promise<Events> {        
         const result = await this._events.getEventById( idEvent );
         const sponsors = await this._events.getEventSponsors( idEvent );
@@ -25,7 +26,28 @@ export class EventsApplication {
             sponsors: sponsors,
             resources: resources,
         }
-        return newData
+    return newData
+    }
+    async getEventInfo( idEvent: number ): Promise<EventInfo> {
+        const result = await this._events.getEventById( idEvent );
+        const sponsors = await this._events.getSponsorsEventSimple( idEvent );
+        return {
+            idEvent: result.idEvent,
+            date: dayjs(result.dateEvent).utc().format("YYYY-MM-DD"),
+            startTime: dayjs(result.startTime).utc().format("HH:mm"),
+            endTime: dayjs(result.endTime).utc().format("HH:mm"),
+            name: result.name,
+            detail: result.detail,
+            category: result.category,
+            location: {
+                idLocation: result.idLocation,
+                location: result.name,
+                latitude: result.latitude,
+                longitude: result.longitude,
+                department: result.departament,
+            },
+            sponsors: sponsors,
+        }
     }
     getSimpleEvents( q?: EventFilters ): Promise<EventSimpleDTO[]> {
         return this._events.getSimpleEvents( q );

@@ -1,4 +1,4 @@
-import { List, Locations } from ".."
+import { List, LocationDet, Locations, Sponsor } from ".."
 export interface EventDTO {
     idEvent: number;
     dateEvent: string;
@@ -16,7 +16,6 @@ export interface EventDTO {
     idLocation: number;    
 }
 
-
 export interface EventSimpleDTO {
     idEvent: number;
     date: string;
@@ -24,7 +23,6 @@ export interface EventSimpleDTO {
     endTime: string;
     title: string;
 }
-
 
 export interface Events {
     date: string;
@@ -39,13 +37,23 @@ export interface Events {
     resources: ResourceEvent[];
 }
 
+export interface EventInfo {
+    idEvent: number;    
+    date: string;
+    startTime: string;
+    endTime: string;
+    name: string;
+    detail: string;
+    category: string;
+    location: LocationDet;
+    sponsors: Sponsor[];
+}
+
 export interface LocationsEvent {
     idLocationEvent?: number;
     idLocation: number;
     idEvent: number;
 }
-
-
 
 export interface ResourceEvent {
     idResourceEvent?: number;
@@ -72,6 +80,8 @@ export interface SponsorEvent {
     observation: string;
     idMeasure: number;
 }
+
+
 
 export interface EventFilters {
     date?: string;

@@ -7,7 +7,8 @@ export class EventsQuery {
             query += `${query} AND fecha = '${q.date}'`;
         }
         if (q?.startTime) {
-            query += `${query} AND inicio = '${q.startTime}'`;
+            query += `${query} AND inicio
+             = '${q.startTime}'`;
         }
         if (q?.endTime) {
             query + `${query} AND fin = '${q.endTime}'`;
@@ -42,4 +43,7 @@ INNER JOIN eventos_patrocinadores ep ON ep.id_patrocinador = p.id_patrocinador
 WHERE ep.id_evento = ${idEvent}`;
     static getResourcesEvent = (idEvent: number) => `SELECT re.id_recurso_evento idResourceEvent, re.id_evento idEvent, re.id_recurso idResource, re.monto amount, re.cantidad stock FROM recursos_eventos re
 WHERE re.id_evento = ${idEvent}`;
+    static getSponsorNameEvent = (idEvent: number) => `SELECT p.id_patrocinador idSponsor, p.patrocinador name FROM patrocinadores p
+INNER JOIN eventos_patrocinadores ep ON ep.id_patrocinador = p.id_patrocinador
+WHERE ep.id_evento= ${idEvent}`;
 }

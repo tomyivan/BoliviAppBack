@@ -227,4 +227,7 @@ export class EventRepository implements IEvent {
             throw error;
         }
     }
+    async getSponsorsEventSimple(idEvent: number): Promise<any[]> {
+        return await Execute.getData(EventsQuery.getSponsorNameEvent(idEvent));
+    }
 }

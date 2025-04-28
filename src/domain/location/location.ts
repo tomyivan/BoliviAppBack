@@ -18,3 +18,11 @@ export interface LocationsDTO {
     latitude: string;
     longitude: string;
 }
+
+export interface LocationDet {
+    idLocation: number;
+    latitude?: number;
+    longitude?: number;
+    location?: string;
+    department?: string;
+}
