@@ -3,7 +3,7 @@ import 'dotenv/config';
 import morgan from 'morgan';
 import cors from 'cors';
 import { rPublic } from './routes/public.routes';
-import { rDependences, rEvent, rResource, rSponsor } from './infraestructure';
+import { rDependences, rEvent, rResource, rSponsor, rPoliticalParty } from './infraestructure';
 import path from 'path';
 import dayjs from 'dayjs';
 import utc from "dayjs/plugin/utc";
@@ -23,6 +23,7 @@ app.use('/api/v1/dependences', rDependences)
 app.use('/api/v1/events', rEvent)
 app.use('/api/v1/resource', rResource)
 app.use('/api/v1/sponsor', rSponsor)
+app.use('/api/v1/politicalParty', rPoliticalParty)
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

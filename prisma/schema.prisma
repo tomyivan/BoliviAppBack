@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./generated/client"
 }
 
 datasource db {
@@ -244,4 +243,45 @@ model idiomas {
   id_idioma Int      @id @default(autoincrement())
   idioma    String   @db.VarChar(20)
   etnias    etnias[]
+}
+
+model archivos_presidente {
+  id_archivo    Int         @id(map: "PK__archivos__9B696443F46EE16E") @default(autoincrement())
+  id_presidente Int
+  nombre        String      @db.VarChar(35)
+  es_portada    Int?        @default(0, map: "DF__archivos___es_po__0D7A0286") @db.TinyInt
+  presidentes   presidentes @relation(fields: [id_presidente], references: [id_presidente], onUpdate: NoAction, map: "FK__archivos___id_pr__0E6E26BF")
+}
+
+model mandatos_presidente {
+  id_mandato    Int         @id(map: "PK__mandatos__7711F8C3384E1A92") @default(autoincrement())
+  id_presidente Int
+  nro_mandato   Int         @unique(map: "UQ__mandatos__AB2FD7391B8D3DEA")
+  fecha_ini     DateTime?   @db.Date
+  fecha_fin     DateTime?   @db.Date
+  observacion   String?     @db.Text
+  presidentes   presidentes @relation(fields: [id_presidente], references: [id_presidente], onUpdate: NoAction, map: "FK__mandatos___id_pr__0A9D95DB")
+}
+
+model partido_politico {
+  id_partido_politico Int           @id(map: "PK__partido___DFFDC432FDF34560") @default(autoincrement())
+  nombre              String        @db.VarChar(100)
+  abrv                String?       @db.VarChar(10)
+  activo              Int?          @default(1, map: "DF__partido_p__activ__1332DBDC") @db.TinyInt
+  presidentes         presidentes[]
+}
+
+model presidentes {
+  id_presidente       Int                   @id(map: "PK__presiden__7845F53D23BFB56C") @default(autoincrement())
+  biografia           String?               @db.Text
+  nombre              String                @db.VarChar(50)
+  apellido            String                @db.VarChar(30)
+  fecha_nacimiento    DateTime              @db.Date
+  fecha_muerte        DateTime?             @db.Date
+  eventos_importantes String?               @db.Text
+  id_partido_politico Int
+  activo              Int?                  @default(1, map: "DF__president__activ__151B244E") @db.TinyInt
+  archivos_presidente archivos_presidente[]
+  mandatos_presidente mandatos_presidente[]
+  partido_politico    partido_politico      @relation(fields: [id_partido_politico], references: [id_partido_politico], onUpdate: NoAction, map: "FK__president__id_pa__14270015")
 }

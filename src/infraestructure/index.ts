@@ -4,3 +4,4 @@ export { rDependences } from "./http-api/dependences/router/router";
 export { rEvent } from "./http-api/events/router/router";
 export { rSponsor } from "./http-api/sponsor/router/router";
 export { rResource } from "./http-api/resource/router/router";
+export { rPoliticalParty } from "./http-api/politicaParty/router/router";

@@ -98,4 +98,14 @@ export class EventsController {
             return ResponseApi.errorResponse( res, 'Error en el servidor', error );
         }
     }
+    async deleteEvent( req: Request, res: Response ) {  
+        try {
+            const { event } = req.body;
+            const response = await this._eventsApplication.deleteEvent( Number(event.idEvent) );
+            return response ? ResponseApi.successResponse( res, 'Evento eliminado', response ) :
+            ResponseApi.errorResponse( res, 'Evento no eliminado', response );
+        } catch ( error ) {
+            return ResponseApi.errorResponse( res, 'Error en el servidor', error );
+        }
+    }
 }

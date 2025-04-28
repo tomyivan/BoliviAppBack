@@ -21,3 +21,6 @@ export { Sponsor } from "./sponsor/sponsor";
 export { Resource, ResourceDTO } from "./resource/resource";
 export { ISponsorDomain } from "./sponsor/isponsor.domain";
 export { IResourceDomain } from "./resource/iresource.domain";
+import { President, PresidentImage, Mandate } from "./president/president";
+export { IPoliticalParty } from "./politicalParty/ipoliticalParty.domain";
+export { PoliticalParty } from "./politicalParty/politicalParty";

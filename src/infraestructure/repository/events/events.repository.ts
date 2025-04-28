@@ -76,7 +76,7 @@ export class EventRepository implements IEvent {
                         id_patrocinador: sponsor.idSponsor,
                         producto: sponsor.product,
                         servicio: sponsor?.service,
-                        cantidad: sponsor.stock,
+                        cantidad: Number(sponsor.stock),
                         observacion: sponsor.observation,
                         id_medida: sponsor.idMeasure,
                     }))
@@ -174,7 +174,31 @@ export class EventRepository implements IEvent {
         }
     }
     async deleteEvent(idEvent: number): Promise<Boolean> {
-        throw new Error("Method not implemented.");
+        try {
+            return await this.prisma.$transaction(async (pr) => {
+                const event = await pr.eventos.update({
+                    where: {
+                        id_evento: idEvent,
+                    },
+                    data: {
+                        activo: 0,
+                    }
+                });
+                pr.historial_usuario.create({
+                    data: {
+                        id_usuario: 1,
+                        id_metodo: idEvent,
+                        accion: "delete",
+                        descripcion: "Evento eliminado correctamente",
+                        fecha_creacion: new Date(),
+                    }
+                });
+                return !!event;
+            });
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
 
     async uploadImage( file: FileEvent, userAdd:number ): Promise<Boolean> {

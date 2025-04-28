@@ -4,9 +4,6 @@ import { check } from "express-validator";
 import { eventsClt } from "../../../dependences/event.dependences";
 import multer from "multer";
 import { EventFileMiddleware } from "../../../../middleware";
-import path from "path";
-import fs from "fs";
-/* config multer */
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -56,6 +53,11 @@ rEvent.delete('/file/drop', validationJWT,
     validationField
   ,EventFileMiddleware.dropFile.bind(EventFileMiddleware),
 eventsClt.dropImage.bind(eventsClt) );
+
+rEvent.delete('/delete', validationJWT, [
+    check('event.idEvent', 'El id del evento es obligatorio').not().isEmpty(),
+    validationField
+] , eventsClt.deleteEvent.bind(eventsClt) );
 
 rEvent.get('/info/:idEvent', validationJWT , eventsClt.getEventInfo.bind(eventsClt) );
 export { rEvent };

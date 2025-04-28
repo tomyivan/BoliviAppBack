@@ -4,3 +4,4 @@ export { DependencesController } from "./dependences/controller/dependences.cont
 export { EventsController } from "./events/controllers/events.controller";
 export { ResourceController } from "./resource/controller/resource.controller";
 export { SponsorController } from "./sponsor/controller/sponsor.controller";
+export { PoliticalPartyController } from "./politicaParty/controller/politicalParty.controller";

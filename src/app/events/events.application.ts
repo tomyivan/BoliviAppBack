@@ -76,4 +76,7 @@ export class EventsApplication {
     dropImage( idFile: number ): Promise<Boolean> {
         return this._events.dropImage( idFile );
     }
+    deleteEvent( idEvent: number ): Promise<Boolean> {
+        return this._events.deleteEvent( idEvent );
+    }
 }

@@ -15,4 +15,5 @@ export interface IEvent {
     getEventSponsors: ( idEvent: number ) => Promise<SponsorEvent[]>;
     getEventResources: ( idEvent: number ) => Promise<any[]>;
     getSponsorsEventSimple: ( idEvent: number ) => Promise<Sponsor[]>;
+    // deleteEvents: ( idEvent: number ) => Promise<Boolean>;
 }
