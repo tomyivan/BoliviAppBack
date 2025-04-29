@@ -43,6 +43,7 @@ export class EventRepository implements IEvent {
                     data: {
                         id_usuario: idUserCreate,
                         id_metodo: event.id_evento,
+                        table_nom: "eventos",
                         accion: "add",
                         descripcion: "Evento creado correctamente",
                         fecha_creacion: new Date(),
@@ -112,6 +113,7 @@ export class EventRepository implements IEvent {
                     data: {
                         id_usuario: idUserUpdate,
                         id_metodo: eventData.idEvent,
+                        table_nom: "eventos",
                         accion: "update",
                         descripcion: "Evento actualizado correctamente",
                         fecha_creacion: new Date(),
@@ -186,6 +188,7 @@ export class EventRepository implements IEvent {
                 });
                 pr.historial_usuario.create({
                     data: {
+                        table_nom: "eventos",
                         id_usuario: 1,
                         id_metodo: idEvent,
                         accion: "delete",
@@ -213,6 +216,7 @@ export class EventRepository implements IEvent {
                 });
                 pr.historial_usuario.create({
                     data: {
+                        table_nom: "archivo_eventos",
                         id_usuario: userAdd,
                         id_metodo: file.idEvent,
                         accion: "add",
@@ -237,6 +241,7 @@ export class EventRepository implements IEvent {
                 });
                 pr.historial_usuario.create({
                     data: {
+                        table_nom: "archivo_eventos",
                         id_usuario: 1,
                         id_metodo: idFile,
                         accion: "delete",

@@ -10,3 +10,4 @@ export { ResourceRepository } from "./resource/resource.repository"
 export { SponsorRepository } from "./sponsor/sponsor.repository"
 
 export { PoliticalPartyRepository } from "./politicalParty/politicalParty.repository"
+export { PresidentRepository } from "./president/president.repository"

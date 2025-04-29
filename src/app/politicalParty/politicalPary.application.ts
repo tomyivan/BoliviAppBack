@@ -1,8 +1,8 @@
-import { List, PoliticalParty, IPoliticalParty } from "../../domain";
+import { PoliticalParty, IPoliticalParty } from "../../domain";
 export class PoliticalPartyApplication {
     constructor( private readonly _politicalParty: IPoliticalParty ) { }  
     
-    getPoliticalParties(): Promise<List[]> {
+    getPoliticalParties(): Promise<PoliticalParty[]> {
         return this._politicalParty.getPoliticalParties()
     }
     createPoliticalParty( politicalParty: PoliticalParty ): Promise<Boolean> {

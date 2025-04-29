@@ -1,13 +1,33 @@
+export interface PresidentFilter {
+    idPresident?: number;
+    idPoliticalParty?: number;    
+    type?: 'simplify' | 'full'; // 'simplify' | 'full'
+}
 export interface President {
     idPresident?: number;
     biography: string;
     name: string;   
-    lastName: string;   
-    politicalParty: string;
+    lastname: string;   
+    idPoliticalParty: number;
+    politicalParty: string;    
     dateBirthday: string;
     dateDeath: string;
     importantEvents: string;
+    mandates: Mandate[];
+}
 
+export interface PresidentDTO {
+    idPresident: number;
+    biography: string;
+    name: string;   
+    lastname: string;   
+    idPoliticalParty: number;
+    politicalParty: string;    
+    dateBirthday?: string;
+    dateDeath?: string;
+    importantEvents?: string;
+    mandates?: Mandate[];
+    images?: PresidentImage[];
 }
 
 export interface PresidentImage {

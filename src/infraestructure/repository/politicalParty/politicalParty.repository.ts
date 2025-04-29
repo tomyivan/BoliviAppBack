@@ -1,12 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { IPoliticalParty, List, PoliticalParty  } from "../../../domain";
+import { IPoliticalParty,  PoliticalParty  } from "../../../domain";
 import { Execute } from "../datasource/querys.execute";
 import { PoliticalPartyQuery } from "../query/politicalParty.query";
 export class PoliticalPartyRepository implements IPoliticalParty {
     
     constructor( private readonly prisma: PrismaClient ) { }  
 
-    async getPoliticalParties(): Promise<List[]> {
+    async getPoliticalParties(): Promise<PoliticalParty[]> {
         return Execute.getData(PoliticalPartyQuery.getPoliticalParty())
     }
     async createPoliticalParty(politicalParty: PoliticalParty): Promise<Boolean> {
@@ -27,7 +27,7 @@ export class PoliticalPartyRepository implements IPoliticalParty {
         try {
             const response = await this.prisma.partido_politico.update({
                 where: {
-                    id_partido_politico: politicalParty.idPoliticalParty
+                    id_partido_politico: politicalParty.id
                 },
                 data: {
                     nombre: politicalParty.name,

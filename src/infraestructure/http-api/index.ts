@@ -5,3 +5,4 @@ export { EventsController } from "./events/controllers/events.controller";
 export { ResourceController } from "./resource/controller/resource.controller";
 export { SponsorController } from "./sponsor/controller/sponsor.controller";
 export { PoliticalPartyController } from "./politicaParty/controller/politicalParty.controller";
+export { PresidentController } from "./president/controller/president.controller";

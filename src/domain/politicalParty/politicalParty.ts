@@ -1,5 +1,5 @@
 export interface PoliticalParty {
-    idPoliticalParty?: number;
+    id?: number;
     name: string;
     acronym: string;
     active?: boolean;
