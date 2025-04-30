@@ -250,13 +250,14 @@ model archivos_presidente {
   id_presidente Int
   nombre        String      @db.VarChar(35)
   es_portada    Int?        @default(0, map: "DF__archivos___es_po__0D7A0286") @db.TinyInt
+  activo        Int?        @default(1, map: "DF__archivos___activ__160F4887") @db.TinyInt
   presidentes   presidentes @relation(fields: [id_presidente], references: [id_presidente], onUpdate: NoAction, map: "FK__archivos___id_pr__0E6E26BF")
 }
 
 model mandatos_presidente {
   id_mandato    Int         @id(map: "PK__mandatos__7711F8C3384E1A92") @default(autoincrement())
   id_presidente Int
-  nro_mandato   Int         @unique(map: "UQ__mandatos__AB2FD7391B8D3DEA")
+  nro_mandato   Int
   fecha_ini     DateTime?   @db.Date
   fecha_fin     DateTime?   @db.Date
   observacion   String?     @db.Text

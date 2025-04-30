@@ -28,13 +28,13 @@ export class PresidentApplication {
     createPresidentImage( file: Express.Multer.File, idPresident: number, userAdd:number  ): Promise<Boolean> {
         const presidentImage: PresidentImage = {
             idPresident: idPresident,
-            name: file.originalname,
+            name: file.filename,
             isFrontPage: false
         }
         return this._president.createPresidentImage( presidentImage )
     }
-    isFacePageImage( idFile: number ): Promise<Boolean> {
-        return this._president.isFacePageImage( idFile )
+    isFacePageImage( idFile: number, idPresident:number ): Promise<Boolean> {
+        return this._president.isFacePageImage( idFile, idPresident )
     }
     deletePresidentImage( idFile: number ): Promise<Boolean> {
         return this._president.deletePresidentImage( idFile )

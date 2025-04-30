@@ -9,6 +9,6 @@ export interface IPresident {
 
     getPresidentImagesByIdPresident: ( idPresident: number ) => Promise<PresidentImage[]>;
     createPresidentImage: ( presidentImage: PresidentImage ) => Promise<Boolean>;
-    isFacePageImage: ( idFile: number ) => Promise<Boolean>;
+    isFacePageImage: ( idFile: number, idPresident:number ) => Promise<Boolean>;
     deletePresidentImage: ( idFile: number ) => Promise<Boolean>;
 }

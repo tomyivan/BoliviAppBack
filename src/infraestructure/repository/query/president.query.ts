@@ -8,9 +8,10 @@ export class PresidentQuery {
             WHERE pr.activo = 1`
         if(q?.type === 'simplify') {
             query = `SELECT pr.id_presidente idPresident, pr.nombre name, pr.apellido lastname,
-            pp.id_partido_politico idPoliticalParty, pp.nombre politicalParty
+            pp.id_partido_politico idPoliticalParty, pp.nombre politicalParty, ap.nombre picture
             FROM presidentes pr
             INNER JOIN partido_politico pp ON pp.id_partido_politico = pr.id_partido_politico
+			LEFT JOIN archivos_presidente ap ON ap.id_presidente = pr.id_presidente and ap.es_portada = 1
             WHERE pr.activo = 1`
         }
         if (q?.idPresident) {
@@ -26,6 +27,6 @@ export class PresidentQuery {
         return `SELECT id_mandato idMandate, nro_mandato nroMandate, fecha_ini startDate, fecha_fin endDate, observacion observation FROM mandatos_presidente WHERE id_presidente = ${idPresident} ORDER BY fecha_ini DESC`;
     }
     static getImages(idPresident: number) {
-        return `SELECT id_archivo idFile, nombre name, es_portada isFrontPage FROM archivos_presidente id_presidente = ${idPresident}`;
+        return `SELECT id_archivo idFile, nombre name, es_portada isFrontPage FROM archivos_presidente WHERE id_presidente = ${idPresident}`;
     }
 }

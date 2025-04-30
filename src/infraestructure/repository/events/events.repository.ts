@@ -206,6 +206,7 @@ export class EventRepository implements IEvent {
 
     async uploadImage( file: FileEvent, userAdd:number ): Promise<Boolean> {
         try {
+        
             return await this.prisma.$transaction(async (pr) => {
                 const response = await pr.archivo_eventos.create({
                     data: {

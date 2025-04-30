@@ -26,6 +26,7 @@ export interface PresidentDTO {
     dateBirthday?: string;
     dateDeath?: string;
     importantEvents?: string;
+    picture?: string;
     mandates?: Mandate[];
     images?: PresidentImage[];
 }

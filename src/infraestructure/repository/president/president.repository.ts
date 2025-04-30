@@ -111,6 +111,24 @@ export class PresidentRepository implements IPresident {
                         activo: 0,
                     }
                 });
+                await tx.historial_usuario.create({
+                    data: {
+                        id_usuario: 1,
+                        table_nom: 'presidentes',
+                        id_metodo: response.id_presidente,
+                        fecha_creacion: new Date(),
+                        accion: 'update',
+                        descripcion: `Se ha eliminado el presidente ${response.nombre} ${response.apellido}`,
+                    }
+                })
+                await tx.archivos_presidente.updateMany({
+                    where: {
+                        id_presidente: idPresident
+                    },
+                    data: {
+                        activo: 0,
+                    }
+                });
                 return response.id_presidente ? true : false;
             } catch (error) {
                 console.log(error);
@@ -147,9 +165,18 @@ export class PresidentRepository implements IPresident {
             throw error;
         }
     }
-    isFacePageImage( idFile: number ): Promise<Boolean> {
+    isFacePageImage( idFile: number, idPresident:number ): Promise<Boolean> {
         return this.prisma.$transaction(async (tx) => {
             try {
+                await tx.archivos_presidente.updateMany({
+                    where: {
+                        id_presidente: idPresident,
+                        es_portada: 1
+                    },
+                    data: {
+                        es_portada: 0
+                    }
+                });
                 const response = await tx.archivos_presidente.update({
                     where: {
                         id_archivo: idFile
@@ -173,6 +200,16 @@ export class PresidentRepository implements IPresident {
                         id_archivo: idFile
                     }
                 });
+                await tx.historial_usuario.create({
+                    data: {
+                        id_usuario: 1,
+                        id_metodo: response.id_archivo,
+                        fecha_creacion: new Date(),
+                        accion: 'delete',
+                        table_nom: 'archivos_presidente',
+                        descripcion: `Se ha eliminado una imagen de un presidente`,
+                    }
+                })
                 return response.id_archivo ? true : false;
             } catch (error) {
                 console.log(error);

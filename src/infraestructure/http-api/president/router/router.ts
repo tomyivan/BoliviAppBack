@@ -32,9 +32,22 @@ rPresident.put('/update', validationJWT, [
     check('president.idPoliticalParty', 'El id del partido es obligatorio').not().isEmpty(),
     check('president.dateBirthday', 'La fecha de nacimiento es obligatoria').not().isEmpty(),
     validationField ], presidentClt.updatePresident.bind(presidentClt) );
+rPresident.post('/delete', validationJWT, [
+    check('president.idPresident', 'El id del presidente es obligatorio').not().isEmpty(),
+    validationField ], presidentClt.deletePresident.bind(presidentClt) );
 
 rPresident.post('/upload/:idPresident', validationJWT, upload.single('file'), presidentClt.createPresidentImage.bind(presidentClt) );   
 rPresident.get('/images/:idPresident', validationJWT , presidentClt.getPresidentImages.bind(presidentClt) );
+rPresident.post('/file/drop', validationJWT,[
+    check('president.idFile', 'El id del archivo es obligatorio').not().isEmpty(),
+    validationField
+  ], presidentClt.deletePresidentImage.bind(presidentClt) );
+rPresident.put('/file/isFrontPage', validationJWT,[
+    check('president.idFile', 'El id del archivo es obligatorio').not().isEmpty(),
+    check('president.idPresident', 'El id del presidente es obligatorio').not().isEmpty(),  
+    validationField
+  ], presidentClt.isFacePageImage.bind(presidentClt) );
+  rPresident
 export {
     rPresident
 }

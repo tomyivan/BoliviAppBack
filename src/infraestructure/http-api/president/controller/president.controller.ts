@@ -49,8 +49,8 @@ export class PresidentController {
 
     async deletePresident( req: Request, res: Response ) {
         try {
-            const { idPresident } = req.params;
-            const response = await this._presidentApplication.deletePresident( Number(idPresident) );
+            const { president } = req.body;
+            const response = await this._presidentApplication.deletePresident( Number(president.idPresident) );
             return response ? ResponseApi.successResponse( res, 'Presidente eliminado', response ) :
             ResponseApi.errorResponse( res, 'Presidente no eliminado', response );
         } catch ( error ) {
@@ -74,6 +74,26 @@ export class PresidentController {
             const response = await this._presidentApplication.createPresidentImage( file as Express.Multer.File, Number(params.idPresident), 1 );
             return response ? ResponseApi.successResponse( res, 'Imagen creada', response ) :
             ResponseApi.errorResponse( res, 'Imagen no creada', response );
+        } catch ( error ) {
+            return ResponseApi.errorResponse( res, 'Error en el servidor', error );
+        }
+    }
+    async deletePresidentImage( req: Request, res: Response ) {
+        try {
+            const { president } = req.body;
+            const response = await this._presidentApplication.deletePresidentImage( Number(president.idFile) );
+            return response ? ResponseApi.successResponse( res, 'Imagen eliminada', response ) :
+            ResponseApi.errorResponse( res, 'Imagen no eliminada', response );
+        } catch ( error ) {
+            return ResponseApi.errorResponse( res, 'Error en el servidor', error );
+        }
+    }
+    async isFacePageImage( req: Request, res: Response ) {
+        try {
+            const { president } = req.body;
+            const response = await this._presidentApplication.isFacePageImage( Number(president.idFile), Number(president.idPresident) );
+            return response ? ResponseApi.successResponse( res, 'Imagen de portada', response ) :
+            ResponseApi.errorResponse( res, 'No es imagen de portada', response );
         } catch ( error ) {
             return ResponseApi.errorResponse( res, 'Error en el servidor', error );
         }
