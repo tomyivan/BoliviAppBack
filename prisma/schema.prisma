@@ -70,16 +70,19 @@ model historial_usuario {
 }
 
 model historias {
-  id_historia         Int                   @id @default(autoincrement())
-  fecha               DateTime              @db.Date
-  titulo              String                @db.VarChar(45)
-  resumen             String                @db.VarChar(120)
-  descripcion         String                @db.Text
-  id_lugar            Int
-  id_categoria        Int
-  historia_personajes historia_personajes[]
-  categorias          categorias            @relation(fields: [id_categoria], references: [id_categoria])
-  lugares             lugares               @relation(fields: [id_lugar], references: [id_lugar])
+  id_historia           Int                     @id @default(autoincrement())
+  titulo                String                  @db.VarChar(45)
+  resumen               String                  @db.VarChar(120)
+  descripcion           String                  @db.Text
+  id_categoria          Int
+  fecha_ini             DateTime                @db.Date
+  fecha_fin             DateTime                @db.Date
+  activo                Int?                    @default(1, map: "DF__historias__activ__2042BE37") @db.TinyInt
+  historia_personajes   historia_personajes[]
+  categorias            categorias              @relation(fields: [id_categoria], references: [id_categoria])
+  historias_archivos    historias_archivos[]
+  historias_ubicaciones historias_ubicaciones[]
+  referencias           referencias[]
 }
 
 model historia_personajes {
@@ -101,15 +104,15 @@ model personajes_h {
 }
 
 model lugares {
-  id_lugar            Int                   @id @default(autoincrement())
-  cod_departamento    String                @db.VarChar(5)
-  nombre              String                @db.VarChar(80)
-  latitud             Float?
-  longitud            Float?
-  etnias              etnias[]
-  historias           historias[]
-  departamentos       departamentos         @relation(fields: [cod_departamento], references: [cod_departamento])
-  ubicaciones_eventos ubicaciones_eventos[]
+  id_lugar              Int                     @id @default(autoincrement())
+  cod_departamento      String                  @db.VarChar(5)
+  nombre                String                  @db.VarChar(80)
+  latitud               Float?
+  longitud              Float?
+  etnias                etnias[]
+  historias_ubicaciones historias_ubicaciones[]
+  departamentos         departamentos           @relation(fields: [cod_departamento], references: [cod_departamento])
+  ubicaciones_eventos   ubicaciones_eventos[]
 }
 
 model departamentos {
@@ -285,4 +288,29 @@ model presidentes {
   archivos_presidente archivos_presidente[]
   mandatos_presidente mandatos_presidente[]
   partido_politico    partido_politico      @relation(fields: [id_partido_politico], references: [id_partido_politico], onUpdate: NoAction, map: "FK__president__id_pa__14270015")
+}
+
+model historias_archivos {
+  id_archivo  Int       @id(map: "PK__historia__9B696443DCCB939D") @default(autoincrement())
+  nombre      String    @db.Text
+  ext         String    @db.VarChar(10)
+  id_historia Int
+  activo      Int?      @default(1, map: "DF__historias__activ__231F2AE2") @db.TinyInt
+  historias   historias @relation(fields: [id_historia], references: [id_historia], onUpdate: NoAction, map: "FK__historias__id_hi__24134F1B")
+}
+
+model historias_ubicaciones {
+  id_ubicacione_historia Int       @id(map: "PK__historia__9F27DBA4745514D8") @default(autoincrement())
+  id_ubicacion           Int
+  id_historia            Int
+  historias              historias @relation(fields: [id_historia], references: [id_historia], onUpdate: NoAction, map: "FK__historias__id_hi__27E3DFFF")
+  lugares                lugares   @relation(fields: [id_ubicacion], references: [id_lugar], onUpdate: NoAction, map: "FK__historias__id_ub__26EFBBC6")
+}
+
+model referencias {
+  id_referencia Int       @id(map: "PK__referenc__F5DA20529A875A74") @default(autoincrement())
+  referencia    String    @db.Text
+  activo        Int?      @default(1, map: "DF__referenci__activ__2AC04CAA") @db.TinyInt
+  id_historia   Int
+  historias     historias @relation(fields: [id_historia], references: [id_historia], onUpdate: NoAction, map: "FK__referenci__id_hi__2BB470E3")
 }

@@ -25,3 +25,7 @@ export { President, PresidentImage, Mandate, PresidentFilter, PresidentDTO } fro
 export { IPresident } from "./president/ipresident.domain";
 export { IPoliticalParty } from "./politicalParty/ipoliticalParty.domain";
 export { PoliticalParty } from "./politicalParty/politicalParty";
+export { History } from "./history/history";
+export { IHistory } from "./history/ihistory.domain";
+export { Promp, ResponseIA } from "./modelIA/modelIA";
+export { IModelIA } from "./modelIA/imodelIA.domain";

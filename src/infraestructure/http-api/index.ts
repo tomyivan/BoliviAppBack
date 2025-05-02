@@ -6,3 +6,5 @@ export { ResourceController } from "./resource/controller/resource.controller";
 export { SponsorController } from "./sponsor/controller/sponsor.controller";
 export { PoliticalPartyController } from "./politicaParty/controller/politicalParty.controller";
 export { PresidentController } from "./president/controller/president.controller";
+export { HistoryController } from "./history/controller/history.controller";
+export { ModelIAController } from "./modelIA/controller/modelIA.controller";

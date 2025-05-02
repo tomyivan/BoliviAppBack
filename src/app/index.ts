@@ -6,3 +6,5 @@ export { SponsorApplication } from "./sponsor/sponsor.application";
 export { ResourceApplication } from "./resource/resource.application";
 export { PoliticalPartyApplication } from "./politicalParty/politicalPary.application";
 export { PresidentApplication } from "./president/president.application";
+export { HistoryApplication } from "./history/history.application";
+export { ModelIAApplication } from "./modelIA/modelIA.application";

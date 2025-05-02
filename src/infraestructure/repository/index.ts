@@ -11,3 +11,5 @@ export { SponsorRepository } from "./sponsor/sponsor.repository"
 
 export { PoliticalPartyRepository } from "./politicalParty/politicalParty.repository"
 export { PresidentRepository } from "./president/president.repository"
+export { HistoryRepository } from "./history/history.repository"
+export { ModelIARepository } from "./modelIA/modelIA.repository"
