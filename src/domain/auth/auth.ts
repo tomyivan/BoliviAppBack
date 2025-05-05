@@ -5,6 +5,7 @@ export interface AuthQuery{
     issuer? : string;   
 }
 export interface Auth {
+    idUser: number;
     email: string,
     name: string,
     nickname: string,
@@ -35,6 +36,7 @@ export interface UserDTO {
 }
 
 export interface User {
+    idUser?: number;
     name: string;
     token?: string;
     lastname: string;

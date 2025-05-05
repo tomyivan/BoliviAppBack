@@ -8,3 +8,4 @@ export { rPoliticalParty } from "./http-api/politicaParty/router/router";
 export { rPresident } from "./http-api/president/router/router";
 export { rHistory } from "./http-api/history/router/router";
 export { rModelIA } from "./http-api/modelIA/router/router";
+export { rCharacter } from "./http-api/character/router/router";

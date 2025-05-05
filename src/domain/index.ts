@@ -25,7 +25,9 @@ export { President, PresidentImage, Mandate, PresidentFilter, PresidentDTO } fro
 export { IPresident } from "./president/ipresident.domain";
 export { IPoliticalParty } from "./politicalParty/ipoliticalParty.domain";
 export { PoliticalParty } from "./politicalParty/politicalParty";
-export { History } from "./history/history";
+export { History, HistorySimpleDTO, HistoryFilter } from "./history/history";
 export { IHistory } from "./history/ihistory.domain";
-export { Promp, ResponseIA } from "./modelIA/modelIA";
+export { Promp, ResponseIA, UserPetition, IAResponseQuery, IAResponseModel } from "./modelIA/modelIA";
 export { IModelIA } from "./modelIA/imodelIA.domain";
+export { CharacterFilter, CharacterDTO } from "./character/character";
+export { ICharacter } from "./character/icharacter.domain";

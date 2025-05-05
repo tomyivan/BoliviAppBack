@@ -20,6 +20,7 @@ export class AuthApplication {
         if (!isPasswordValid) return false;
 
         const payload = {
+            idUser: response.idUser,
             email: response.email,
             name: response.name,
             nickname: response.nickname,
@@ -40,6 +41,7 @@ export class AuthApplication {
 
     async loginWithGoogle(data: GoogleDTO):Promise<any>{
         const auth:User = {
+
             email: data.email,
             name: data.given_name,
             nickname: data?.email?.split('@')[0],
@@ -57,6 +59,7 @@ export class AuthApplication {
         const isPasswordValid = bcrypt.compareSync(data.sub ?? "", response.pass);
         if (!isPasswordValid) return false;
         const payload = {
+            idUser: response.idUser,
             email: response.email,
             name: response.name,
             nickname: response.nickname,

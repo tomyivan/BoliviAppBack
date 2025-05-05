@@ -73,10 +73,10 @@ export class EventsApplication {
     getImages( idEvent: number ): Promise<FileEvent[]> {
         return this._events.getImages( idEvent );
     }
-    dropImage( idFile: number ): Promise<Boolean> {
-        return this._events.dropImage( idFile );
+    dropImage( idFile: number, userDel: number ): Promise<Boolean> {
+        return this._events.dropImage( idFile, userDel );
     }
-    deleteEvent( idEvent: number ): Promise<Boolean> {
-        return this._events.deleteEvent( idEvent );
+    deleteEvent( idEvent: number, userDel: number ): Promise<Boolean> {
+        return this._events.deleteEvent( idEvent, userDel );
     }
 }

@@ -8,3 +8,4 @@ export { PoliticalPartyController } from "./politicaParty/controller/politicalPa
 export { PresidentController } from "./president/controller/president.controller";
 export { HistoryController } from "./history/controller/history.controller";
 export { ModelIAController } from "./modelIA/controller/modelIA.controller";
+export { CharacterController } from "./character/controller/character.controller";

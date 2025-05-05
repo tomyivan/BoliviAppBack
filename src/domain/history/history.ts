@@ -1,5 +1,25 @@
 import { Locations } from "../location/location";
 
+export interface HistoryFilter {
+    idHistory?: number;
+    title?: string;
+    date: string;
+    from?: string;
+    to?: string;
+    summary?: string;
+    idCategory?: string;
+    type: 'simple' | 'full';
+}
+
+export interface HistorySimpleDTO {
+    idHistory: number;
+    title: string;
+    dateStart: string;
+    dateEnd: string;
+    summary: string;
+    category: string;
+}
+
 export interface History {
     idHistory?: number;
     title: string;

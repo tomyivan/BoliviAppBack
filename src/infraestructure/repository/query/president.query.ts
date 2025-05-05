@@ -26,7 +26,10 @@ export class PresidentQuery {
     static getMandates(idPresident: number) {
         return `SELECT id_mandato idMandate, nro_mandato nroMandate, fecha_ini startDate, fecha_fin endDate, observacion observation FROM mandatos_presidente WHERE id_presidente = ${idPresident} ORDER BY fecha_ini DESC`;
     }
-    static getImages(idPresident: number) {
+    static getImages(idPresident: number, isFrontPage?: boolean) {
+        if (isFrontPage) {
+            return `SELECT id_archivo idFile, nombre name, es_portada isFrontPage FROM archivos_presidente WHERE id_presidente = ${idPresident} and es_portada = 1`;
+        }
         return `SELECT id_archivo idFile, nombre name, es_portada isFrontPage FROM archivos_presidente WHERE id_presidente = ${idPresident}`;
     }
 }

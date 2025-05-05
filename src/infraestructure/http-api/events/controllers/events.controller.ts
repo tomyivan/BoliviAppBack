@@ -36,9 +36,9 @@ export class EventsController {
     }
     async createEvent( req: Request, res: Response ) {
         try {
+            const { idUser } = req;
             const { event } = req.body;
-            const idUserCreate = req.name;
-            const response = await this._eventsApplication.createEvent( event, 1 );
+            const response = await this._eventsApplication.createEvent( event, Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Evento creado', response ) :
             ResponseApi.errorResponse( res, 'Evento no creado', response );
         } catch ( error ) {
@@ -47,9 +47,9 @@ export class EventsController {
     }
     async updateEvent( req: Request, res: Response ) {
         try {
+            const { idUser } = req;
             const { event } = req.body;
-            const idUserUpdate = req.name;
-            const response = await this._eventsApplication.updateEvent( event, 1 );
+            const response = await this._eventsApplication.updateEvent( event, Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Evento actualizado', response ) :
             ResponseApi.errorResponse( res, 'Evento no actualizado', response );
         } catch ( error ) {
@@ -58,9 +58,9 @@ export class EventsController {
     }
     async uploadImage( req: Request, res: Response ) {
         try {
-            const { file, params, user } = req;
+            const { file, params, idUser } = req;
             const { idEvent } = params;
-            const response = await this._eventsApplication.uploadImage( file as Express.Multer.File, Number(idEvent), 1 );
+            const response = await this._eventsApplication.uploadImage( file as Express.Multer.File, Number(idEvent), Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Imagen subida', response ) :
             ResponseApi.errorResponse( res, 'Imagen no subida', response );
         } catch ( error ) {
@@ -80,8 +80,9 @@ export class EventsController {
     }
     async dropImage( req: Request, res: Response ) {
         try {
+            const { idUser } = req;
             const { eventFile } = req.body;
-            const response = await this._eventsApplication.dropImage( Number(eventFile.idFile) );
+            const response = await this._eventsApplication.dropImage( Number(eventFile.idFile), Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Imagen eliminada', response ) :
             ResponseApi.errorResponse( res, 'Imagen no eliminada', response );
         } catch ( error ) {
@@ -101,7 +102,8 @@ export class EventsController {
     async deleteEvent( req: Request, res: Response ) {  
         try {
             const { event } = req.body;
-            const response = await this._eventsApplication.deleteEvent( Number(event.idEvent) );
+            const { idUser } = req;
+            const response = await this._eventsApplication.deleteEvent( Number(event.idEvent), Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Evento eliminado', response ) :
             ResponseApi.errorResponse( res, 'Evento no eliminado', response );
         } catch ( error ) {

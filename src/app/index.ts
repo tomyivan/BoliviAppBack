@@ -8,3 +8,4 @@ export { PoliticalPartyApplication } from "./politicalParty/politicalPary.applic
 export { PresidentApplication } from "./president/president.application";
 export { HistoryApplication } from "./history/history.application";
 export { ModelIAApplication } from "./modelIA/modelIA.application";
+export { CharacterApplication } from "./character/character.application";

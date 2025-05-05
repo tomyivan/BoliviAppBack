@@ -1,3 +1,19 @@
+export interface IAResponseQuery {
+    query?: string;
+    table?: string;
+    error?: string;
+}
+export interface IAResponseModel {
+    id?:string,
+    name?:string,
+    content?:string,
+    date?:string,
+    summary?:string,
+    img?:any[],
+} 
+export interface UserPetition {
+    text: string;
+}
 export interface Promp {
     contents: Content[];
 }
@@ -24,7 +40,7 @@ export interface Candidate {
 
 export interface Content {
     parts: Part[];
-    role:  string;
+    role?:  string;
 }
 
 export interface Part {

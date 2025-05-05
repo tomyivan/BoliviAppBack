@@ -13,3 +13,4 @@ export { PoliticalPartyRepository } from "./politicalParty/politicalParty.reposi
 export { PresidentRepository } from "./president/president.repository"
 export { HistoryRepository } from "./history/history.repository"
 export { ModelIARepository } from "./modelIA/modelIA.repository"
+export { CharacterRepository } from "./character/character.repository"

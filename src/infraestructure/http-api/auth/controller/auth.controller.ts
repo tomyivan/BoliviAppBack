@@ -8,6 +8,7 @@ export class AuthController {
         const auth = req;              
         try {
             const newAuth = {
+                idUser: auth.idUser,
                 email: auth.email,
                 name: auth.name,
                 nickname: auth.nickname,

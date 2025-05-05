@@ -175,7 +175,7 @@ export class EventRepository implements IEvent {
             throw error;
         }
     }
-    async deleteEvent(idEvent: number): Promise<Boolean> {
+    async deleteEvent(idEvent: number, userDel: number): Promise<Boolean> {
         try {
             return await this.prisma.$transaction(async (pr) => {
                 const event = await pr.eventos.update({
@@ -189,7 +189,7 @@ export class EventRepository implements IEvent {
                 pr.historial_usuario.create({
                     data: {
                         table_nom: "eventos",
-                        id_usuario: 1,
+                        id_usuario: userDel,
                         id_metodo: idEvent,
                         accion: "delete",
                         descripcion: "Evento eliminado correctamente",
@@ -232,7 +232,7 @@ export class EventRepository implements IEvent {
             throw error;
         }
     }
-    async dropImage(idFile: number): Promise<Boolean> {
+    async dropImage(idFile: number, userDel: number): Promise<Boolean> {
         try {
             return await this.prisma.$transaction(async (pr) => {
                 const response = await pr.archivo_eventos.delete({
@@ -243,7 +243,7 @@ export class EventRepository implements IEvent {
                 pr.historial_usuario.create({
                     data: {
                         table_nom: "archivo_eventos",
-                        id_usuario: 1,
+                        id_usuario: userDel,
                         id_metodo: idFile,
                         accion: "delete",
                         descripcion: "Archivo eliminado correctamente",

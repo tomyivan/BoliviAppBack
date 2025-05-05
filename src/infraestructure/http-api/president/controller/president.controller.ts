@@ -24,9 +24,11 @@ export class PresidentController {
     }
     async createPresident( req: Request, res: Response ) {
         try {
+            const { idUser } = req;
+            console.log( "user", idUser );
             const { president } = req.body;
             if( !president?.mandates || president.mandates.length === 0) return ResponseApi.errorResponse( res, 'El presidente debe tener al menos un mandato', [] );
-            const response = await this._presidentApplication.createPresident( president );
+            const response = await this._presidentApplication.createPresident( president, Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Presidente creado', response ) :
             ResponseApi.errorResponse( res, 'Presidente no creado', response );
         } catch ( error ) {
@@ -37,9 +39,11 @@ export class PresidentController {
 
     async updatePresident( req: Request, res: Response ) {
         try {
+            const { idUser } = req;
+            
             const { president } = req.body;
             if( !president?.mandates || president.mandates.length === 0) return ResponseApi.errorResponse( res, 'El presidente debe tener al menos un mandato', [] );
-            const response = await this._presidentApplication.updatePresident( president );
+            const response = await this._presidentApplication.updatePresident( president,Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Presidente actualizado', response ) :
             ResponseApi.errorResponse( res, 'Presidente no actualizado', response );
         } catch ( error ) {
@@ -49,8 +53,9 @@ export class PresidentController {
 
     async deletePresident( req: Request, res: Response ) {
         try {
+            const { idUser } = req;
             const { president } = req.body;
-            const response = await this._presidentApplication.deletePresident( Number(president.idPresident) );
+            const response = await this._presidentApplication.deletePresident( Number(president.idPresident), Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Presidente eliminado', response ) :
             ResponseApi.errorResponse( res, 'Presidente no eliminado', response );
         } catch ( error ) {
@@ -70,8 +75,8 @@ export class PresidentController {
     }
     async createPresidentImage( req: Request, res: Response ) {
         try {
-            const { params, file, user } = req;
-            const response = await this._presidentApplication.createPresidentImage( file as Express.Multer.File, Number(params.idPresident), 1 );
+            const { params, file, idUser } = req;
+            const response = await this._presidentApplication.createPresidentImage( file as Express.Multer.File, Number(params.idPresident), Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Imagen creada', response ) :
             ResponseApi.errorResponse( res, 'Imagen no creada', response );
         } catch ( error ) {
@@ -80,8 +85,9 @@ export class PresidentController {
     }
     async deletePresidentImage( req: Request, res: Response ) {
         try {
+            const { idUser } = req;
             const { president } = req.body;
-            const response = await this._presidentApplication.deletePresidentImage( Number(president.idFile) );
+            const response = await this._presidentApplication.deletePresidentImage( Number(president.idFile), Number(idUser) );
             return response ? ResponseApi.successResponse( res, 'Imagen eliminada', response ) :
             ResponseApi.errorResponse( res, 'Imagen no eliminada', response );
         } catch ( error ) {

@@ -1,7 +1,15 @@
-import { IHistory, History } from "../../../domain";
+import { IHistory, History, HistoryFilter, HistorySimpleDTO, List } from "../../../domain";
 import { PrismaClient } from "@prisma/client";
+import { HistoryQuery } from "../query/history.query";
+import { Execute } from "../datasource/querys.execute";
 export class HistoryRepository implements IHistory {
     constructor( private readonly _prisma: PrismaClient ) {}
+    async getCategoryHistory(): Promise<List[]> {
+        return Execute.getData(HistoryQuery.getCategoryHistory);
+    }
+    async getHistory( q : HistoryFilter): Promise<HistorySimpleDTO[]> {
+        return Execute.getData(HistoryQuery.getHistory(q));
+    }
     async createHistory( history: History, idUserCreate: number ): Promise<Boolean> {
         try {
             return await this._prisma.$transaction(async (prisma) => {

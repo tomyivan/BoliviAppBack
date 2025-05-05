@@ -5,7 +5,8 @@ import { historyClt } from "../../../dependences/history.dependences";
 import { HistoryFieldMiddleware } from "../../../../middleware";
 const rHistory = Router();
 
-
+rHistory.get('/', validationJWT, historyClt.getHistory.bind(historyClt));
+rHistory.get('/category', validationJWT, historyClt.getCategoryHistory.bind(historyClt));
 rHistory.post('/add', validationJWT, [
     check('history.title').notEmpty().withMessage('El titulo es obligatorio'),
     check('history.dateStart').notEmpty().withMessage('La fecha de inicio es obligatoria'),

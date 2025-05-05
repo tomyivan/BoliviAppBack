@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 const rPresident = Router();
 rPresident.get('/', validationJWT, presidentClt.getPresidents.bind(presidentClt) );
 rPresident.get('/:idPresident', validationJWT,  presidentClt.getPresidentById.bind(presidentClt) );
-rPresident.post('/add', [
+rPresident.post('/add', validationJWT,[
     check('president.name', 'El nombre es obligatorio').not().isEmpty(),
     check('president.lastname', 'El apellido es obligatorio').not().isEmpty(),
     check('president.idPoliticalParty', 'El id del partido es obligatorio').not().isEmpty(),

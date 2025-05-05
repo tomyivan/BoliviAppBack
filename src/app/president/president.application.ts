@@ -12,14 +12,14 @@ export class PresidentApplication {
             mandates
         }
     }
-    createPresident( president: President ): Promise<Boolean> {
-        return this._president.createPresident( president )
+    createPresident( president: President, userAdd:number ): Promise<Boolean> {
+        return this._president.createPresident( president, userAdd )
     }
-    updatePresident( president: President ): Promise<Boolean> {
-        return this._president.updatePresident( president )
+    updatePresident( president: President, userEdit:number ): Promise<Boolean> {
+        return this._president.updatePresident( president, userEdit )
     }
-    deletePresident( idPresident: number ): Promise<Boolean> {
-        return this._president.deletePresident( idPresident )
+    deletePresident( idPresident: number, userDel:number ): Promise<Boolean> {
+        return this._president.deletePresident( idPresident, userDel )
     }
 
     getPresidentImagesByIdPresident( idPresident: number ): Promise<PresidentImage[]> {
@@ -31,13 +31,13 @@ export class PresidentApplication {
             name: file.filename,
             isFrontPage: false
         }
-        return this._president.createPresidentImage( presidentImage )
+        return this._president.createPresidentImage( presidentImage, userAdd )
     }
     isFacePageImage( idFile: number, idPresident:number ): Promise<Boolean> {
         return this._president.isFacePageImage( idFile, idPresident )
     }
-    deletePresidentImage( idFile: number ): Promise<Boolean> {
-        return this._president.deletePresidentImage( idFile )
+    deletePresidentImage( idFile: number, userDel:number ): Promise<Boolean> {
+        return this._president.deletePresidentImage( idFile, userDel )
     }
 
 }

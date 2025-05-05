@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
 interface Payload {
+    idUser: number,
     email?: string,
     name: string,
     nickname: string,

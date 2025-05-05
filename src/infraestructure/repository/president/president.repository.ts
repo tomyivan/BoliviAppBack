@@ -12,7 +12,7 @@ export class PresidentRepository implements IPresident {
         return response[0];
     }
     
-    createPresident( president: President ): Promise<Boolean> {
+    createPresident( president: President, userAdd: number ): Promise<Boolean> {
         return this.prisma.$transaction(async (tx) => {
             try {
                 const response = await tx.presidentes.create({
@@ -38,7 +38,7 @@ export class PresidentRepository implements IPresident {
                 await tx.historial_usuario.create({
                     data: {
                         table_nom: 'presidentes',
-                        id_usuario: 1,
+                        id_usuario: userAdd,
                         id_metodo: response.id_presidente,
                         fecha_creacion: new Date(),
                         accion: 'add',
@@ -52,7 +52,7 @@ export class PresidentRepository implements IPresident {
             }
         });
     }
-    updatePresident( president: President ): Promise<Boolean> {
+    updatePresident( president: President, userEdit: number ): Promise<Boolean> {
         return this.prisma.$transaction(async (tx) => {
             try {
                 const response = await tx.presidentes.update({
@@ -85,7 +85,7 @@ export class PresidentRepository implements IPresident {
                 });
                 await tx.historial_usuario.create({
                     data: {
-                        id_usuario: 1,
+                        id_usuario: userEdit,
                         table_nom: 'presidentes',
                         id_metodo: response.id_presidente,
                         fecha_creacion: new Date(),
@@ -100,7 +100,7 @@ export class PresidentRepository implements IPresident {
             }
         });
     }
-    deletePresident( idPresident: number ): Promise<Boolean> {
+    deletePresident( idPresident: number, userDel: number ): Promise<Boolean> {
         return this.prisma.$transaction(async (tx) => {
             try {
                 const response = await tx.presidentes.update({
@@ -113,7 +113,7 @@ export class PresidentRepository implements IPresident {
                 });
                 await tx.historial_usuario.create({
                     data: {
-                        id_usuario: 1,
+                        id_usuario: userDel,
                         table_nom: 'presidentes',
                         id_metodo: response.id_presidente,
                         fecha_creacion: new Date(),
@@ -139,7 +139,7 @@ export class PresidentRepository implements IPresident {
     getPresidentImagesByIdPresident( idPresident: number ): Promise<PresidentImage[]> {
         return Execute.getData( PresidentQuery.getImages( idPresident ) )
     }
-    createPresidentImage( presidentImage: PresidentImage ): Promise<Boolean> {
+    createPresidentImage( presidentImage: PresidentImage, userAdd:number ): Promise<Boolean> {
         try {
             return this.prisma.$transaction(async (tx) => {
                 const response = await tx.archivos_presidente.create({
@@ -150,7 +150,7 @@ export class PresidentRepository implements IPresident {
                 });
                 await tx.historial_usuario.create({
                     data: {
-                        id_usuario: 1,
+                        id_usuario: userAdd,
                         id_metodo: response.id_archivo,
                         fecha_creacion: new Date(),
                         accion: 'add',
@@ -192,7 +192,7 @@ export class PresidentRepository implements IPresident {
             }
         });
     }
-    deletePresidentImage( idFile: number ): Promise<Boolean> {
+    deletePresidentImage( idFile: number, userDel:number ): Promise<Boolean> {
         return this.prisma.$transaction(async (tx) => {
             try {
                 const response = await tx.archivos_presidente.delete({
@@ -202,7 +202,7 @@ export class PresidentRepository implements IPresident {
                 });
                 await tx.historial_usuario.create({
                     data: {
-                        id_usuario: 1,
+                        id_usuario: userDel,
                         id_metodo: response.id_archivo,
                         fecha_creacion: new Date(),
                         accion: 'delete',

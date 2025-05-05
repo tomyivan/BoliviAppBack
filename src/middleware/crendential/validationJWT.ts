@@ -7,7 +7,9 @@ const validationJWT = async (req: Request, res: Response, next: any) => {
     const token: string = req.header('x-token') || '';
     if ( !token ) return ResponseApi.notFoundResponse(res, 'Ingrese sus credenciales', null);
     try {       
-        const {  email,
+        const { 
+            idUser,
+            email,
             name,
             nickname, 
             gender,
@@ -15,7 +17,8 @@ const validationJWT = async (req: Request, res: Response, next: any) => {
             codPhone,     
             city,
             rol,
-            isVerify } = jwt.verify( token, process.env.SECRET_JWT_SEED || '' ) as JwtPayload;       
+            isVerify } = jwt.verify( token, process.env.SECRET_JWT_SEED || '' ) as JwtPayload;   
+        req.idUser = idUser;   
         req.email = email;
         req.name = name;
         req.nickname = nickname;

@@ -1,6 +1,6 @@
 import { EventFilters } from "../../../domain";
 export class EventsQuery {
-    static getCategoryEvents = `SELECT id_categoria id, nombre name FROM categorias WHERE activo = 1`;
+    static getCategoryEvents = `SELECT id_categoria id, nombre name FROM categorias WHERE id_tipo_categoria = 1 and activo = 1`;
     static getSimpleEvents(q?: EventFilters): string {
         let query = `SELECT id_evento idEvent, fecha date, inicio startTime, fin endTime, nombre title FROM eventos WHERE activo = 1`;
         if (q?.date) {
